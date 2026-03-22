@@ -19,8 +19,10 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
+    font-family: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(108,99,255,0.1), transparent 28%),
+      linear-gradient(180deg, #0d1020 0%, #0f1117 55%, #13162a 100%);
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
@@ -70,22 +72,24 @@
   }
   .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
   .question-card {
-    background: var(--surface);
+    background: linear-gradient(180deg, rgba(26,29,39,0.96), rgba(20,23,34,0.96));
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1.25rem;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, transform 0.2s ease;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.2);
   }
+  .question-card:hover { transform: translateY(-1px); }
   .question-card.answered-correct { border-color: var(--correct); }
   .question-card.answered-incorrect { border-color: var(--incorrect); }
   .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
   .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
   .options { list-style: none; }
   .options li {
-    background: var(--surface2);
+    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(30,34,48,0.96));
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 0.75rem 1rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
@@ -124,9 +128,9 @@
   .explanation.visible { display: block; }
   /* Visual elements */
   .visual-box {
-    background: var(--surface2);
+    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96));
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 1rem;
     margin: 0.75rem 0;
     font-family: 'Courier New', monospace;
@@ -159,25 +163,28 @@
     width: 10px; height: 10px;
     background: var(--accent);
     border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(108,99,255,0.08);
   }
   .timeline-item .year { color: var(--accent); font-weight: 600; }
   .diagram {
     text-align: center;
     margin: 0.75rem 0;
     padding: 1rem;
-    background: var(--surface2);
-    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96));
+    border-radius: 14px;
     border: 1px solid var(--border);
+    overflow-x: auto;
   }
   .diagram svg { max-width: 100%; }
   .score-card {
     background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border: 2px solid var(--accent);
-    border-radius: 16px;
+    border: 1px solid rgba(167,139,250,0.35);
+    border-radius: 18px;
     padding: 2rem;
     text-align: center;
     margin: 2rem 0;
     display: none;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.22);
   }
   .score-card.visible { display: block; }
   .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
@@ -186,11 +193,11 @@
   .score-message { margin-top: 1rem; font-size: 1rem; }
   .btn {
     display: inline-block;
-    background: var(--accent);
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
     color: #fff;
     padding: 0.6rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 999px;
     cursor: pointer;
     font-size: 0.95rem;
     margin-top: 1rem;
