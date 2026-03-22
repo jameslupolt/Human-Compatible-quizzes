@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus: The Transformer Revolution — Quiz</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242838;
+    --accent: #10b981;
+    --accent2: #34d399;
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3348;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #064e3b 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 60% 40%, rgba(16,185,129,0.1) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+  .header h1 { font-size: 1.8rem; position: relative; }
+  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--accent); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #6ee7b7); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+
+  /* Teach blocks */
+  .teach-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid var(--accent);
+  }
+  .teach-block h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .teach-block p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.6rem; }
+  .teach-block p:last-child { margin-bottom: 0; }
+  .teach-block strong { color: var(--text); }
+  .teach-block em { color: var(--accent2); font-style: normal; }
+
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s; }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-incorrect { border-color: var(--incorrect); }
+  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(16,185,129,0.08); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
+  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
+  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(16,185,129,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
+  .visual-box .highlight { color: var(--accent); font-weight: bold; }
+  .visual-box .label { color: var(--correct); }
+  .visual-box .warn { color: #f59e0b; }
+  .visual-box .dim { opacity: 0.5; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }
+  .diagram svg { max-width: 100%; }
+  .timeline { display: flex; flex-direction: column; gap: 0; margin: 0.75rem 0; padding-left: 1.5rem; border-left: 2px solid var(--accent); }
+  .timeline-item { padding: 0.4rem 0 0.4rem 1rem; position: relative; font-size: 0.85rem; color: var(--muted); }
+  .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.7rem; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
+  .timeline-item .year { color: var(--accent); font-weight: 600; }
+  .comparison-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
+  .comparison-table th { background: var(--surface2); color: var(--accent); padding: 0.5rem; text-align: left; border-bottom: 2px solid var(--accent); }
+  .comparison-table td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
+  .stat-row { display: flex; gap: 0.75rem; margin: 0.75rem 0; flex-wrap: wrap; }
+  .stat-box { flex: 1; min-width: 120px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; }
+  .stat-box .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+  .stat-box .stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
+  .score-card { background: linear-gradient(135deg, #064e3b, #065f46); border: 2px solid var(--accent); border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+  .score-label { color: var(--muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--accent); color: #000; padding: 0.6rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; font-weight: 600; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">← All Chapters</a>
+  <span class="chapter-num">Bonus Chapter</span>
+  <h1>The Transformer Revolution</h1>
+  <div class="subtitle">What Russell's book missed — and what it got right</div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">12</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- SECTION 1: The Problem Transformers Solved -->
+  <div class="teach-block">
+    <h3>The Problem Before Transformers</h3>
+    <p>Before 2017, the best AI language systems used <strong>recurrent neural networks (RNNs)</strong>. An RNN reads a sentence the way you read a ticker tape: <em>one word at a time, left to right</em>. It keeps a running summary of what it has read so far — like trying to remember a long story by keeping just one sticky note.</p>
+    <p>This had two crippling problems. First, <strong>the sticky note is too small</strong>: by the time you reach the end of a long paragraph, the details from the beginning have been smudged and overwritten. Second, <strong>you can't read faster by hiring more people</strong> — each word depends on the summary from the previous word, so the work is fundamentally serial. You can't parallelize it.</p>
+  </div>
+
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">What was the fundamental bottleneck of recurrent neural networks (RNNs) that transformers were designed to overcome?</div>
+    <div class="diagram">
+      <svg width="440" height="100" viewBox="0 0 440 100">
+        <text x="10" y="15" fill="#94a3b8" font-size="10">RNN: Each step waits for the previous one</text>
+        <rect x="10" y="25" width="55" height="35" rx="5" fill="#242838" stroke="#ef4444"/>
+        <text x="37" y="47" text-anchor="middle" fill="#ef4444" font-size="9">The</text>
+        <line x1="65" y1="42" x2="85" y2="42" stroke="#ef4444" stroke-width="1.5" marker-end="url(#ra)"/>
+        <rect x="85" y="25" width="55" height="35" rx="5" fill="#242838" stroke="#ef4444"/>
+        <text x="112" y="47" text-anchor="middle" fill="#ef4444" font-size="9">cat</text>
+        <line x1="140" y1="42" x2="160" y2="42" stroke="#ef4444" stroke-width="1.5" marker-end="url(#ra)"/>
+        <rect x="160" y="25" width="55" height="35" rx="5" fill="#242838" stroke="#ef4444"/>
+        <text x="187" y="47" text-anchor="middle" fill="#ef4444" font-size="9">sat</text>
+        <line x1="215" y1="42" x2="235" y2="42" stroke="#ef4444" stroke-width="1.5" marker-end="url(#ra)"/>
+        <rect x="235" y="25" width="55" height="35" rx="5" fill="#242838" stroke="#ef4444" stroke-dasharray="3,3"/>
+        <text x="262" y="47" text-anchor="middle" fill="#94a3b8" font-size="9">on</text>
+        <text x="262" y="77" text-anchor="middle" fill="#94a3b8" font-size="8">⏳ waiting...</text>
+        <text x="10" y="93" fill="#ef4444" font-size="9">Serial: can't start "on" until "sat" is done</text>
+        <defs><marker id="ra" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#ef4444"/></marker></defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>RNNs could not learn from examples — they required hand-coded rules</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>RNNs could only process images, not text</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>RNNs process words sequentially (one after another), so they can't be parallelized and they lose information over long sequences</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>RNNs required too much training data to be practical</span></li>
+    </ul>
+    <div class="explanation" id="exp0">RNNs must process tokens in strict sequence — each step depends on the last. This means (1) you can't use more hardware to go faster (no parallelism), and (2) information from early in a long sequence gets degraded as it's compressed through hundreds of serial steps. This is called the "vanishing gradient" problem. Transformers solved both issues at once.</div>
+  </div>
+
+  <!-- SECTION 2: The Core Idea — Attention -->
+  <div class="teach-block">
+    <h3>The Core Idea: Attention</h3>
+    <p>In 2017, a team at Google published <strong>"Attention Is All You Need"</strong> — one of the most important papers in the history of computing. Their key insight: <em>throw away the ticker tape entirely</em>.</p>
+    <p>Instead of reading left to right, a transformer looks at <strong>all the words at once</strong> and asks: <em>"For each word, which other words are most relevant to understanding it?"</em> This is called <strong>self-attention</strong>.</p>
+    <p>Think of it like a room full of people at a dinner party. In an RNN, you can only whisper to the person next to you, who whispers to the next. In a transformer, <strong>everyone can talk to everyone simultaneously</strong>. Each person decides who to pay attention to based on what they need to know.</p>
+    <p>Concretely: for the sentence <em>"The animal didn't cross the street because it was too tired"</em> — what does "it" refer to? A transformer computes an <strong>attention score</strong> between "it" and every other word, discovering that "it" should attend strongly to "animal" (not "street"). It does this through learned patterns of <em>queries</em> ("what am I looking for?"), <em>keys</em> ("what do I have to offer?"), and <em>values</em> ("what information do I carry?").</p>
+  </div>
+
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">In a transformer's self-attention mechanism, what happens when processing the word "it" in the sentence below?</div>
+    <div class="diagram">
+      <svg width="460" height="130" viewBox="0 0 460 130">
+        <text x="10" y="18" fill="#94a3b8" font-size="10">Self-attention: "it" looks at all words simultaneously</text>
+        <!-- words -->
+        <text x="20" y="50" fill="#94a3b8" font-size="11">The</text>
+        <text x="60" y="50" fill="#10b981" font-size="11" font-weight="bold">animal</text>
+        <text x="115" y="50" fill="#94a3b8" font-size="11">didn't</text>
+        <text x="165" y="50" fill="#94a3b8" font-size="11">cross</text>
+        <text x="210" y="50" fill="#94a3b8" font-size="11">the</text>
+        <text x="245" y="50" fill="#94a3b8" font-size="11">street</text>
+        <text x="300" y="50" fill="#94a3b8" font-size="11">because</text>
+        <text x="365" y="50" fill="#f59e0b" font-size="11" font-weight="bold">it</text>
+        <text x="390" y="50" fill="#94a3b8" font-size="11">was</text>
+        <text x="425" y="50" fill="#94a3b8" font-size="11">tired</text>
+        <!-- attention lines from "it" -->
+        <line x1="370" y1="55" x2="80" y2="55" stroke="#10b981" stroke-width="3" opacity="0.7"/>
+        <line x1="370" y1="55" x2="265" y2="55" stroke="#94a3b8" stroke-width="1" opacity="0.3"/>
+        <line x1="370" y1="55" x2="30" y2="55" stroke="#94a3b8" stroke-width="1" opacity="0.15"/>
+        <line x1="370" y1="55" x2="435" y2="55" stroke="#94a3b8" stroke-width="1.5" opacity="0.4"/>
+        <!-- attention weights -->
+        <rect x="50" y="70" width="60" height="20" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10b981"/>
+        <text x="80" y="84" text-anchor="middle" fill="#10b981" font-size="9" font-weight="bold">0.72</text>
+        <rect x="235" y="70" width="50" height="20" rx="4" fill="rgba(148,163,184,0.1)" stroke="#2d3348"/>
+        <text x="260" y="84" text-anchor="middle" fill="#94a3b8" font-size="9">0.08</text>
+        <rect x="420" y="70" width="40" height="20" rx="4" fill="rgba(148,163,184,0.15)" stroke="#2d3348"/>
+        <text x="440" y="84" text-anchor="middle" fill="#94a3b8" font-size="9">0.12</text>
+        <text x="10" y="115" fill="#94a3b8" font-size="9">Thickness = attention weight. "it" attends most strongly to "animal"</text>
+      </svg>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>It looks only at the word immediately before it ("because") to determine its meaning</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>It computes attention scores with every other word in parallel, assigning high weight to "animal" and low weight to less relevant words</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>It uses a dictionary to look up the definition of "it"</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>It replaces "it" with "animal" before continuing</span></li>
+    </ul>
+    <div class="explanation" id="exp1">Self-attention computes a score between every pair of words simultaneously. For "it," the model learns that "animal" gets a high attention weight (it's the referent), while "street" gets a low one. This is done through learned query-key-value projections — the model <em>learns</em> what patterns of attention are useful, rather than being told. Crucially, all of this happens in parallel, not sequentially.</div>
+  </div>
+
+  <!-- SECTION 3: Multi-Head Attention & Layers -->
+  <div class="teach-block">
+    <h3>Multiple Perspectives: Multi-Head Attention</h3>
+    <p>One set of attention scores captures one kind of relationship (like "what does this pronoun refer to?"). But language has <em>many kinds of relationships simultaneously</em> — grammar, meaning, tone, factual associations, and more.</p>
+    <p>A transformer runs <strong>multiple attention "heads" in parallel</strong> — typically 12 to 128. Each head learns to look for a different kind of pattern. One head might track grammatical subject-verb agreement; another might track which entities are being compared; a third might notice that the tone shifted from formal to sarcastic.</p>
+    <p>These heads are then stacked into <strong>layers</strong>. Early layers tend to learn surface patterns (which words are near each other, basic syntax). Deeper layers compose these into higher-level abstractions (argument structure, factual reasoning, style). A large model might have 80+ layers, each with dozens of heads — a cascade of increasingly abstract pattern recognition.</p>
+  </div>
+
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">Why does a transformer use multiple attention heads rather than a single one?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>For redundancy — if one head fails, others can compensate</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>Each head processes a different language (English, French, etc.)</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>Multiple heads make the model slower but more accurate</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>Language has many simultaneous relationship types (grammar, reference, meaning, tone) — each head can specialize in a different pattern, all computed in parallel</span></li>
+    </ul>
+    <div class="explanation" id="exp2">A single attention pattern can only capture one kind of relationship. Multi-head attention lets the model attend to information from different types of relationships at the same time. Researchers have found that individual heads do specialize — some track syntax, some track coreference, some track positional patterns. This is all done in parallel (not slower), and stacking many layers lets these patterns compose into complex reasoning.</div>
+  </div>
+
+  <!-- SECTION 4: Why It Scales -->
+  <div class="teach-block">
+    <h3>The Scaling Revelation</h3>
+    <p>The transformer paper was published in June 2017 — <em>two years before Russell's book</em>. But in 2017, transformers were "just" a better translation model. Nobody yet knew the most important thing about them.</p>
+    <p>In 2020, researchers at OpenAI discovered <strong>scaling laws</strong>: transformer performance improves <em>predictably and smoothly</em> as you increase three things — <em>model size</em> (number of parameters), <em>training data</em>, and <em>compute</em> (number of calculations). Double all three and the model gets reliably better. There was no obvious ceiling.</p>
+    <p>This was revolutionary because <strong>previous AI approaches hit walls</strong>. Making an RNN bigger didn't reliably help. Making an expert system bigger made it more brittle. But transformers converted raw scale — something the tech industry is very good at providing — directly into capability.</p>
+  </div>
+
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">What are "scaling laws" in the context of transformers, and why were they so significant?</div>
+    <div class="diagram">
+      <svg width="360" height="160" viewBox="0 0 360 160">
+        <text x="30" y="15" fill="#94a3b8" font-size="10">Transformer Scaling: Predictable improvement</text>
+        <!-- axes -->
+        <line x1="50" y1="130" x2="340" y2="130" stroke="#2d3348" stroke-width="1"/>
+        <line x1="50" y1="130" x2="50" y2="25" stroke="#2d3348" stroke-width="1"/>
+        <text x="195" y="155" text-anchor="middle" fill="#94a3b8" font-size="9">Compute (log scale) →</text>
+        <text x="15" y="80" fill="#94a3b8" font-size="9" transform="rotate(-90,15,80)">Capability →</text>
+        <!-- RNN curve (plateaus) -->
+        <path d="M60,120 Q120,105 150,100 Q200,97 340,95" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+        <text x="290" y="88" fill="#ef4444" font-size="9">RNN (plateau)</text>
+        <!-- Transformer curve (keeps climbing) -->
+        <path d="M60,120 Q120,100 180,80 Q250,55 340,35" stroke="#10b981" stroke-width="2.5" fill="none"/>
+        <text x="280" y="30" fill="#10b981" font-size="9" font-weight="bold">Transformer</text>
+        <!-- annotation -->
+        <line x1="200" y1="80" x2="200" y2="97" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="225" y="92" fill="#f59e0b" font-size="8">gap widens</text>
+      </svg>
+    </div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>Performance improves as a smooth, predictable function of model size, data, and compute — with no obvious ceiling — meaning the tech industry could convert money into capability</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>Bigger models are cheaper to train because they need fewer training steps</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>The laws prove that transformers will eventually become conscious</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>Scaling laws describe how models shrink in size as they get smarter</span></li>
+    </ul>
+    <div class="explanation" id="exp3">Scaling laws (Kaplan et al., 2020) showed that transformer loss decreases as a <em>power law</em> with model size, data, and compute. This was unprecedented — previous architectures plateaued. It meant capability was, in a sense, purchasable: spend 10x more on compute, get a predictable improvement. This launched the modern AI arms race and made transformers the dominant architecture.</div>
+  </div>
+
+  <!-- SECTION 5: What Russell Said -->
+  <div class="teach-block">
+    <h3>What Russell Wrote in 2019</h3>
+    <p>In Chapter 2, Russell discusses deep learning and is candid about his skepticism: <em>"My own view… is that it falls far short of what is needed"</em> for human-level AI. He saw deep learning as producing powerful <strong>reflex agents</strong> — systems that map input to output without genuine understanding, reasoning, or planning.</p>
+    <p>This was a reasonable position in 2019. At that time, the largest language model (GPT-2, with 1.5 billion parameters) could write plausible paragraphs but quickly became incoherent. No language model could reliably answer questions, write code, reason about novel situations, or carry on a sustained conversation. The idea that <em>making a text-prediction model bigger</em> would produce something that <em>seemed to reason</em> would have struck most AI researchers as implausible.</p>
+  </div>
+
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">In his book, Russell categorizes deep learning systems as a type of agent. Which type, and what limitation does he ascribe to them?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>Knowledge-based agents — they can reason but lack real-world knowledge</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>Reflex agents — they map input to output without representing objectives, understanding, or reasoning about the world</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>Utility-maximizing agents — they optimize well but have wrong utility functions</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>Planning agents — they plan well but execute poorly</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Russell views deep learning as producing sophisticated reflex agents — systems that have learned complex input-output mappings from examples. Like the blinking reflex, they don't "know what they're doing": the objective (translation accuracy, image classification) is not represented internally. He wrote that deep learning "falls far short of what is needed" for general AI. The question of whether large language models have moved beyond pure reflex behavior remains one of the most important debates in AI.</div>
+  </div>
+
+  <!-- SECTION 6: What Actually Happened -->
+  <div class="teach-block">
+    <h3>What Actually Happened: 2020–2025</h3>
+    <p>The transformer architecture, combined with scaling, produced a succession of increasingly capable systems:</p>
+  </div>
+
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">What is the training objective of GPT-style large language models — the "purpose put into the machine," in Russell's terms?</div>
+    <div class="timeline">
+      <div class="timeline-item"><span class="year">2017</span> — "Attention Is All You Need" (original transformer, 65M params)</div>
+      <div class="timeline-item"><span class="year">2018</span> — GPT-1 (117M params), BERT</div>
+      <div class="timeline-item"><span class="year">2019</span> — GPT-2 (1.5B) — <em>Human Compatible</em> published</div>
+      <div class="timeline-item"><span class="year">2020</span> — GPT-3 (175B) — scaling laws discovered</div>
+      <div class="timeline-item"><span class="year">2022</span> — ChatGPT launches (Nov 30) — fastest-growing app in history</div>
+      <div class="timeline-item"><span class="year">2023</span> — GPT-4 — passes bar exam, medical licensing exams</div>
+      <div class="timeline-item"><span class="year">2024–25</span> — Claude, Gemini, open-source models — increasingly capable reasoning</div>
+    </div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>Predict the next word (token) in a sequence — minimize the error in these predictions across trillions of words of text</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>Understand and summarize any document given to it</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>Answer questions correctly based on a curated knowledge base</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>Pass the Turing test by mimicking human conversation</span></li>
+    </ul>
+    <div class="explanation" id="exp5">The core training objective is <strong>next-token prediction</strong>: given all the words so far, predict what comes next. This is the "purpose put into the machine." The surprise was that optimizing this seemingly simple objective, at sufficient scale, produces systems that appear to do much more — write code, reason through problems, translate languages, and engage in complex dialogue. Whether this represents true understanding or very sophisticated pattern matching is an open and important question.</div>
+  </div>
+
+  <!-- SECTION 7: Emergent Capabilities -->
+  <div class="teach-block">
+    <h3>Emergent Capabilities: The Big Surprise</h3>
+    <p>The most unsettling discovery was <strong>emergence</strong>: abilities that appeared suddenly at certain scales without being explicitly trained. A model with 1 billion parameters couldn't do arithmetic. A model with 100 billion, trained on the same kind of data, suddenly could — not because anyone taught it arithmetic, but because predicting text <em>well enough</em> requires modeling the processes that generate text, including mathematical reasoning.</p>
+    <p>This is what Russell didn't anticipate. He assumed — along with most of the field — that getting from "pattern matcher" to "reasoner" would require fundamental new ideas, not just more of the same architecture with more data and compute. Whether LLMs truly "reason" or merely simulate reasoning convincingly enough to be useful remains deeply contested.</p>
+  </div>
+
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">What are "emergent capabilities" in large language models?</div>
+    <div class="visual-box"><span class="label">Model scale →</span>                 <span class="highlight">Capability appears</span>
+                                            ╱
+  Small model:   ░░░░░░░░░░░             ╱
+  Medium model:  ░░░░░░░░░░░░░░        ╱
+  Large model:   ░░░░░░░░░░░░░░░░░<span class="highlight">████████</span>
+                                   ↑
+                          <span class="warn">Not present at smaller scale.
+                          Not explicitly trained.
+                          Appears "suddenly."</span></div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>Capabilities that are pre-programmed by engineers at specific model sizes</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>Features that emerge from fine-tuning on specialized datasets</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>Abilities (like arithmetic or multi-step reasoning) that are absent at smaller scales but appear suddenly at larger scales — without being explicitly trained</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>New languages the model invents for internal communication</span></li>
+    </ul>
+    <div class="explanation" id="exp6">Emergent capabilities appear at scale thresholds without explicit training. Examples include multi-step arithmetic, chain-of-thought reasoning, and code generation. This is philosophically striking: the model was only trained to predict the next word, but at sufficient scale it develops what <em>look like</em> higher-order cognitive abilities. Whether these represent genuine understanding or sophisticated surface mimicry is one of the central questions in modern AI.</div>
+  </div>
+
+  <!-- SECTION 8: What Russell Got Wrong -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Russell wrote that deep learning "falls far short of what is needed" for general AI. What was his core reasoning, and where did it go wrong?</div>
+    <table class="comparison-table">
+      <tr><th>Russell's 2019 View</th><th>What Happened</th></tr>
+      <tr><td>Deep learning produces only reflex agents</td><td>LLMs exhibit reasoning, planning, and code generation</td></tr>
+      <tr><td>Needs fundamental new ideas, not just scale</td><td>Scale alone (with transformers) went much further than expected</td></tr>
+      <tr><td>Sharp boundaries on machine competence</td><td>LLMs are surprisingly general across many domains</td></tr>
+      <tr><td>Can't compare machine IQ to human IQ</td><td>LLMs pass professional exams across law, medicine, etc.</td></tr>
+    </table>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>He was completely wrong — deep learning has achieved human-level general intelligence</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>He correctly identified that deep learning circa 2019 was limited, but underestimated how far the transformer architecture + massive scale would push those limits — the "reflex agent" framing didn't predict emergent capabilities</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>He was right and still is — LLMs are not really intelligent at all</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>His analysis of deep learning was irrelevant because transformers are not deep learning</span></li>
+    </ul>
+    <div class="explanation" id="exp7">Russell's analysis was reasonable for 2019. Deep learning systems <em>at that time</em> were indeed limited reflex agents. What he didn't foresee — along with most of the field — was that the transformer architecture combined with enormous scale would produce systems that at least <em>approximate</em> reasoning, planning, and generality. Whether LLMs truly reason or "merely" simulate reasoning is still debated, but functionally they have blown past the boundaries Russell described. Note: transformers are still a form of deep learning, not a separate paradigm.</div>
+  </div>
+
+  <!-- SECTION 9: Why He Missed It -->
+  <div class="teach-block">
+    <h3>Why Almost Everyone Missed It</h3>
+    <p>Russell wasn't alone. The transformer paper was published in 2017, but its consequences were not obvious until 2020-2022. Several things conspired to make this hard to predict:</p>
+    <p><strong>1. The "bitter lesson" hadn't been fully absorbed.</strong> Rich Sutton's 2019 essay argued that general methods leveraging computation always win over human-knowledge-engineered approaches. Transformers were the purest vindication of this principle yet.</p>
+    <p><strong>2. The relevant experience didn't exist.</strong> Nobody had ever trained a model with 175 billion parameters on hundreds of billions of words. You can't predict emergent behaviors from small-scale experiments.</p>
+    <p><strong>3. "Next-word prediction" sounds trivial.</strong> The training objective sounds too simple to produce intelligence. But predicting what a human would write next requires modeling the <em>world that humans write about</em> — physics, psychology, logic, culture, and everything else.</p>
+  </div>
+
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">Why does "predicting the next word" turn out to be a much harder (and more powerful) objective than it sounds?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>Because there are millions of possible words to choose from</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>Because it requires memorizing every book ever written</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>Because English grammar is extremely complex</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>Because to predict text well, the model must build internal representations of the world that generated the text — physics, logic, psychology, causation, and more</span></li>
+    </ul>
+    <div class="explanation" id="exp8">To predict what comes next in "When you drop a ball, it falls because ___," the model must represent gravity. To predict what follows "She was furious when she discovered ___," it must model human psychology. To predict the next line of a proof, it must model logic. Next-word prediction is a <em>compression task</em> on all of human knowledge — and the best compression of human text may require something like understanding the world humans write about.</div>
+  </div>
+
+  <!-- SECTION 10: What Russell Got Right -->
+  <div class="teach-block">
+    <h3>What Russell Got Profoundly Right</h3>
+    <p>Here is the irony: the transformer revolution has made Russell's <em>core argument</em> — about the standard model, value alignment, and the King Midas problem — <strong>more urgent, not less</strong>.</p>
+    <p>LLMs are trained to predict text (a fixed objective). They are then fine-tuned with reward models (another fixed objective). They are deployed to maximize engagement, revenue, or user satisfaction (more fixed objectives). Every one of these is a "purpose put into the machine" that <em>may not be the purpose we really desire</em>. The misalignment Russell warned about now operates at a scale and speed he didn't anticipate.</p>
+  </div>
+
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">Which of Russell's arguments from <em>Human Compatible</em> has been <em>most strongly validated</em> by the transformer revolution?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>His prediction that AI progress would stall without fundamental breakthroughs</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>His argument that consciousness is the key risk factor in AI</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>His warning that optimizing a fixed objective (the standard model) is dangerous — LLMs optimizing next-token prediction, reward scores, and engagement are precisely the kind of systems he warned about</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>His argument that AI would never match humans at creative tasks</span></li>
+    </ul>
+    <div class="explanation" id="exp9">Russell's central thesis — that the standard model (machines optimizing fixed objectives) is fundamentally dangerous — has been dramatically validated. LLMs trained on next-token prediction develop capabilities that weren't intended or anticipated. Systems fine-tuned for "helpfulness" can be jailbroken. Engagement-optimized AI feeds misinformation. The King Midas problem is playing out in real time. His timeline was wrong; his argument was right.</div>
+  </div>
+
+  <!-- SECTION 11: The Key Architectural Insight -->
+  <div class="teach-block">
+    <h3>Putting It All Together: The Transformer Architecture</h3>
+    <p>A full transformer stacks together several building blocks:</p>
+    <p><strong>1. Tokenization:</strong> Text is split into "tokens" (roughly word pieces). <em>"understanding"</em> might become <em>"under" + "standing"</em>.</p>
+    <p><strong>2. Embedding:</strong> Each token is converted into a list of numbers (a vector) that represents its meaning in a high-dimensional space. Words with similar meanings end up near each other.</p>
+    <p><strong>3. Positional encoding:</strong> Since the model sees all tokens at once (not sequentially), it needs to know <em>where</em> each token is. Position information is added to each embedding.</p>
+    <p><strong>4. Multi-head self-attention + feed-forward layers:</strong> Repeated many times (the "layers" of the network). Each pass lets tokens exchange information and refine their representations.</p>
+    <p><strong>5. Output:</strong> The final representation of the last token is used to predict a probability distribution over what token comes next.</p>
+  </div>
+
+  <div class="question-card" id="q10">
+    <div class="question-num">Question 11</div>
+    <div class="question-text">Why does a transformer need "positional encoding"?</div>
+    <div class="diagram">
+      <svg width="440" height="100" viewBox="0 0 440 100">
+        <text x="10" y="15" fill="#94a3b8" font-size="10">Without position info, these two sentences look identical:</text>
+        <rect x="10" y="25" width="200" height="30" rx="5" fill="#242838" stroke="#ef4444"/>
+        <text x="110" y="44" text-anchor="middle" fill="#ef4444" font-size="10">"Dog bites man" = {dog, bites, man}</text>
+        <rect x="230" y="25" width="200" height="30" rx="5" fill="#242838" stroke="#ef4444"/>
+        <text x="330" y="44" text-anchor="middle" fill="#ef4444" font-size="10">"Man bites dog" = {man, bites, dog}</text>
+        <text x="220" y="44" text-anchor="middle" fill="#94a3b8" font-size="14">=</text>
+        <text x="10" y="80" fill="#10b981" font-size="10">With positional encoding: the model knows word ORDER matters</text>
+        <rect x="10" y="85" width="120" height="10" rx="3" fill="#10b981" opacity="0.3"/>
+        <text x="70" y="93" text-anchor="middle" fill="#10b981" font-size="8">position 1, 2, 3</text>
+      </svg>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(10,0,this)"><span class="option-letter">A</span><span>To tell the model which language the text is in</span></li>
+      <li onclick="answer(10,1,this)"><span class="option-letter">B</span><span>Because self-attention processes all tokens simultaneously with no inherent sense of order — without position info, "dog bites man" and "man bites dog" would be identical</span></li>
+      <li onclick="answer(10,2,this)"><span class="option-letter">C</span><span>To help the model count how many words are in the sentence</span></li>
+      <li onclick="answer(10,3,this)"><span class="option-letter">D</span><span>To align tokens with a grammar parse tree</span></li>
+    </ul>
+    <div class="explanation" id="exp10">Self-attention treats its input as a <em>set</em>, not a sequence — it has no built-in notion of left-to-right. Without positional encoding, the model couldn't distinguish "dog bites man" from "man bites dog" because the same tokens would produce the same attention patterns. Positional encodings inject order information, giving each position a unique signature that the model can learn to use.</div>
+  </div>
+
+  <!-- SECTION 12: The Bigger Picture -->
+  <div class="question-card" id="q11">
+    <div class="question-num">Question 12</div>
+    <div class="question-text">Russell uses the analogy of the Rutherford-Szilard story to warn against betting on AI's failure. How does the transformer story serve as a real-world version of this analogy?</div>
+    <div class="visual-box"><span class="label">Russell's Analogy (Ch. 1):</span>
+  Rutherford: "Atomic energy is moonshine"  →  24 hrs later, chain reaction solved
+
+<span class="label">The Transformer Parallel:</span>
+  2019: "Deep learning falls far short"     →  3 yrs later, ChatGPT
+
+<span class="highlight">In both cases: the breakthrough was already in motion
+when the skeptic spoke.</span>
+
+  <span class="warn">Szilard's chain reaction patent:   1934
+  "Attention Is All You Need" paper: 2017
+  Russell's book:                    2019</span></div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(11,0,this)"><span class="option-letter">A</span><span>It doesn't — the transformer story is fundamentally different from nuclear physics</span></li>
+      <li onclick="answer(11,1,this)"><span class="option-letter">B</span><span>It shows that AI researchers are as wrong as nuclear physicists were</span></li>
+      <li onclick="answer(11,2,this)"><span class="option-letter">C</span><span>It proves Russell was being hypocritical by warning about exactly the thing he then fell victim to</span></li>
+      <li onclick="answer(11,3,this)"><span class="option-letter">D</span><span>Russell warned not to bet against human ingenuity, then underestimated the transformer — the key breakthrough (attention) was already published when he wrote the book, just as Szilard's insight came the day after Rutherford's dismissal</span></li>
+    </ul>
+    <div class="explanation" id="exp11">The parallel is striking. Russell used the Rutherford story to warn that dismissing AI progress is dangerous — then his own book, published two years after the transformer paper, underestimated what that architecture would achieve. The transformer was Szilard's chain reaction: the key idea was already in place, but its full implications weren't yet visible. This doesn't invalidate Russell's thesis — it <em>underscores</em> it. If progress can surprise even experts this dramatically, the urgency of solving alignment is even greater than he argued.</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Bonus Chapter Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 12 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="index.html" class="btn">← All Chapters</a>
+  </div>
+</div>
+
+<script>
+const total = 12;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You understand both the transformer architecture and its implications for Russell's thesis.";
+  else if (pct >= 0.8) msg = "Excellent — strong grasp of the technology, the history, and the philosophical stakes.";
+  else if (pct >= 0.6) msg = "Good work! The teach blocks above each question are worth a re-read for the concepts you missed.";
+  else msg = "This is challenging material — scroll back through the explanatory sections and try to connect the technical ideas to Russell's arguments.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

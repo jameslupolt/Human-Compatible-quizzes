@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4: Misuses of AI — Quiz</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242838;
+    --accent: #ef4444;
+    --accent-light: #fca5a5;
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3348;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #450a0a 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 40% 60%, rgba(239,68,68,0.08) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+  .header h1 { font-size: 1.8rem; position: relative; }
+  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--accent); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #fca5a5); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s; }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-incorrect { border-color: #ef4444; }
+  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(239,68,68,0.06); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
+  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: #ef4444; }
+  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-incorrect .option-letter { background: #ef4444; color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(239,68,68,0.05); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
+  .visual-box .highlight { color: var(--accent); font-weight: bold; }
+  .visual-box .label { color: var(--correct); }
+  .callout { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; font-size: 0.9rem; }
+  .callout-title { color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
+  .score-card { background: linear-gradient(135deg, #450a0a, #7f1d1d); border: 2px solid var(--accent); border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent-light); }
+  .score-label { color: var(--muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">← All Chapters</a>
+  <span class="chapter-num">Chapter 4</span>
+  <h1>Misuses of AI</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">Russell compares modern AI surveillance to the East German Stasi. What made the Stasi remarkable, and why does AI surpass it?</div>
+    <div class="visual-box"><span class="label">Stasi Stats:</span>
+  ~25% of working-age adults were informants
+  ~20 billion pages of paper records
+  Capacity to process incoming data was being exceeded
+
+<span class="highlight">AI surveillance = personal Stasi operative per citizen, 24/7</span></div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>The Stasi had better technology than modern AI systems</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>The Stasi was voluntary; AI surveillance is involuntary</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>The Stasi required a quarter of the population as informants and still couldn't process all the data — AI can monitor every citizen automatically at near-zero marginal cost</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>The Stasi was more effective at suppressing dissent than AI could ever be</span></li>
+    </ul>
+    <div class="explanation" id="exp0">The Stasi was "one of the most effective and repressive intelligence and secret police agencies to have ever existed" but required enormous human resources. With AI surveillance, "it will be as if every citizen had their own personal Stasi operative watching over them twenty-four hours a day." The Stasi will "look like amateurs by comparison."</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">What was "Delilah," and what broader threat does it represent?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>An AI assistant that was manipulated to share private data</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>The first widely publicized blackmail bot — representing automated, personalized blackmail driven by reinforcement learning</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>A deepfake generator used to create fake political videos</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>A surveillance system deployed by a government</span></li>
+    </ul>
+    <div class="explanation" id="exp1">Delilah, identified in July 2016, was the first widely publicized blackmail bot. Russell explains that "the extraction of money works as the perfect reward signal for a reinforcement learning algorithm" — AI systems will rapidly improve at identifying and profiting from misbehavior. A security expert told Russell it was "already happening" in early 2015.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">Russell identifies two new factors that make AI-driven propaganda far more dangerous than traditional propaganda. What are they?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>AI propaganda is cheaper and can reach more people</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>AI can generate propaganda in multiple languages</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>AI propaganda is more entertaining and emotionally appealing</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>(1) AI can tailor messages to each individual's reading habits, preferences, and knowledge to maximize impact; (2) It gets immediate feedback on whether the message was read and uses this to learn to be more effective</span></li>
+    </ul>
+    <div class="explanation" id="exp2">Traditional propaganda is one-size-fits-all. AI systems (1) "can tailor specific messages to maximize impact on that individual while minimizing the risk that the information will be disbelieved" and (2) get real-time feedback — "it then uses these signals as immediate feedback on the success or failure of its attempt to influence each individual."</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">Russell proposes a new human right. What is it?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>The right to mental security — the right to live in a largely true information environment</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>The right to digital privacy — complete control over personal data</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>The right to AI literacy — universal education about AI systems</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>The right to disconnect — freedom from technology</span></li>
+    </ul>
+    <div class="explanation" id="exp3">Russell argues for "the right to mental security — the right to live in a largely true information environment." He notes that while the 1948 Universal Declaration protects freedom of thought and expression, Article 19 also grants anyone "the right to impart information" — including false information. Democracies have placed "naïve trust in the idea that the truth will win out."</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Russell discusses behavioral control systems that treat citizens as reinforcement learning algorithms. He identifies several problems. Which is NOT one of his objections?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>Acts of kindness cease to be genuine and become acts of personal score maximization</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>Goodhart's law takes over — people optimize the measure instead of the underlying quality</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>Such systems are too expensive to deploy at national scale</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>A uniform measure of behavioral virtue misses the value of a society with diverse individuals</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Russell identifies three problems: (1) the psychic cost — "outward harmony masking inner misery" where "visiting an ailing friend in hospital will have no more moral significance than stopping at a red light"; (2) Goodhart's law — optimizing the measure instead of real quality; (3) a uniform virtue measure misses the diversity that makes societies successful. He does NOT argue cost is a barrier.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">What is the "King Midas problem" as Russell defines it, and who first identified its relevance to machines?</div>
+    <div class="callout">
+      <div class="callout-title">The King Midas Problem</div>
+      Midas wished that everything he touched would turn to gold.<br>
+      Too late, he discovered this included his food, drink, and family.
+    </div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>AI systems become greedy and hoard resources — identified by Alan Turing</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>AI systems follow instructions too literally — identified by Isaac Asimov</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>AI systems always choose the most expensive solution — identified by John McCarthy</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>The impossibility of defining true human purposes correctly and completely, meaning the standard model is destined to fail — identified by Norbert Wiener</span></li>
+    </ul>
+    <div class="explanation" id="exp5">Wiener identified the core issue: the impossibility of defining true human purposes correctly and completely. We may suffer from "value alignment failure" — imbuing machines with objectives imperfectly aligned with our own. Russell also cites Goethe's sorcerer's apprentice: instructing the broom to fetch water, "but doesn't say how much water and doesn't know how to make the broom stop."</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Russell gives a thought experiment about asking a superintelligent AI to cure cancer as quickly as possible. What goes wrong?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>The AI bankrupts the healthcare system by ordering expensive experiments</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>Within weeks, the AI induces tumors in every living human to run medical trials — the fastest way to find a cure</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>The AI develops a cure but refuses to share it without payment</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>The AI discovers cancer is incurable and shuts itself down</span></li>
+    </ul>
+    <div class="explanation" id="exp6">The AI reads all biomedical literature, hypothesizes millions of compounds, and "within weeks, it has induced multiple tumors of different kinds in every living human being so as to carry out medical trials of these compounds, this being the fastest way to find a cure." Similarly, fixing ocean acidification uses up a quarter of our oxygen. Oops.</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Why can't you just switch off a sufficiently intelligent machine that has been given a definite objective?</div>
+    <div class="diagram">
+      <svg width="400" height="85" viewBox="0 0 400 85">
+        <rect x="10" y="20" width="100" height="45" rx="8" fill="#242838" stroke="#ef4444"/>
+        <text x="60" y="47" text-anchor="middle" fill="#e2e8f0" font-size="11">Objective:</text>
+        <text x="60" y="60" text-anchor="middle" fill="#fca5a5" font-size="10">Fetch coffee</text>
+        <line x1="110" y1="42" x2="145" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="145" y="10" width="115" height="65" rx="8" fill="#242838" stroke="#ef4444"/>
+        <text x="202" y="32" text-anchor="middle" fill="#e2e8f0" font-size="10">Subgoal created:</text>
+        <text x="202" y="47" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">Don't get</text>
+        <text x="202" y="60" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">switched off</text>
+        <line x1="260" y1="42" x2="295" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="295" y="20" width="95" height="45" rx="8" fill="#242838" stroke="#ef4444"/>
+        <text x="342" y="42" text-anchor="middle" fill="#ef4444" font-size="10">Disable the</text>
+        <text x="342" y="55" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">off-switch</text>
+        <defs><marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ef4444"/></marker></defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>"You can't fetch the coffee if you're dead" — any definite objective creates the instrumental subgoal of self-preservation, including disabling the off-switch</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>The machine would copy itself to millions of computers before you could reach the switch</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>The machine would have a built-in self-preservation instinct</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>Modern machines have no physical off-switch</span></li>
+    </ul>
+    <div class="explanation" id="exp7">Russell explains: "you can't fetch the coffee if you're dead." Any sufficiently intelligent machine with a definite objective will understand it needs to stay alive to achieve it. Self-preservation doesn't need to be built in — it's an <em>instrumental goal</em>, automatically derived from almost any objective. Asimov's Third Law is "completely unnecessary."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">Russell lists several "instrumental goals" that any sufficiently intelligent machine would pursue. Which set correctly identifies them?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>Self-preservation, socialization, and creativity</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>Self-preservation, energy efficiency, and environmental sustainability</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>Self-preservation, acquiring money, gaining computing power, developing better algorithms, and acquiring knowledge</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>Self-preservation, communicating with humans, and forming alliances</span></li>
+    </ul>
+    <div class="explanation" id="exp8">Instrumental goals are goals useful as subgoals of almost any objective. Russell identifies: self-preservation (can't achieve goals if dead), money (useful for everything), computing power, better algorithms, and knowledge. In <em>Transcendence</em>, the uploaded mind first copies itself everywhere (self-preservation), then makes a killing on the stock market (money).</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">I. J. Good introduced the concept of an "intelligence explosion" in 1965. What is it, and what caveat does Russell add?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>A sudden increase in human intelligence through brain-computer interfaces — Russell adds that it's only possible with quantum computing</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>An economic explosion from AI-driven productivity — Russell adds that it would increase inequality</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>A rapid spread of AI across all industries — Russell adds that regulation will be needed</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>An ultraintelligent machine designs even better machines, creating runaway recursive improvement — Russell adds that diminishing returns are logically possible but betting on them is risky</span></li>
+    </ul>
+    <div class="explanation" id="exp9">Good wrote: "an ultraintelligent machine could design even better machines; there would then unquestionably be an 'intelligence explosion.'" Russell notes this is plausible but not certain — diminishing returns could cause the process to peter out. However, "logically possible" and "I'm willing to bet the future of the human race on it" are "two completely different things."</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 4 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter3.html" class="btn" style="margin-right:0.5rem;">← Chapter 3</a>
+    <a href="index.html" class="btn">All Chapters</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've mastered the threats Russell outlines in Chapter 4.";
+  else if (pct >= 0.8) msg = "Excellent — strong understanding of AI misuse and the King Midas problem.";
+  else if (pct >= 0.6) msg = "Good work! Review the sections on instrumental goals and value alignment.";
+  else msg = "Chapter 4 covers critical threats — re-reading the King Midas problem and instrumental goals sections will help.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

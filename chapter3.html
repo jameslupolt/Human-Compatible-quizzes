@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: How Might AI Progress in the Future? — Quiz</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242838;
+    --accent: #f59e0b;
+    --accent-glow: rgba(245, 158, 11, 0.25);
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3348;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #78350f 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 30%, rgba(245,158,11,0.1) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+  .header h1 { font-size: 1.8rem; position: relative; }
+  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--accent); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #fbbf24); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s; }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-incorrect { border-color: var(--incorrect); }
+  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(245,158,11,0.08); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
+  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
+  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(245,158,11,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
+  .visual-box .highlight { color: var(--accent); font-weight: bold; }
+  .visual-box .label { color: var(--correct); }
+  .stat-row { display: flex; gap: 0.75rem; margin: 0.75rem 0; flex-wrap: wrap; }
+  .stat-box { flex: 1; min-width: 140px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; }
+  .stat-box .stat-value { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .stat-box .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
+  .score-card { background: linear-gradient(135deg, #78350f, #92400e); border: 2px solid var(--accent); border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+  .score-label { color: var(--muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--accent); color: #000; padding: 0.6rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; font-weight: 600; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">← All Chapters</a>
+  <span class="chapter-num">Chapter 3</span>
+  <h1>How Might AI Progress in the Future?</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">Russell criticizes the "technical community" for a failure of imagination when discussing superintelligent AI. What is his specific complaint?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>Researchers focus too much on science fiction scenarios</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>They discuss only incremental advances (safer cars, fewer medical errors) rather than examining the real consequences of success</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>They ignore the economic implications of AI</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>They are too pessimistic about the timeline for human-level AI</span></li>
+    </ul>
+    <div class="explanation" id="exp0">Russell says researchers imagine robots as individual entities carrying brains, when they'll likely be wirelessly connected into a single global entity. They discuss reduced medical errors and safer cars when they should be imagining what a truly general-purpose superintelligent system could do.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">Russell proposes a thought experiment about what superintelligent AI could do. If search engines didn't exist yet but you had a superintelligent AI, what happens?</div>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-value">$17,500</div>
+        <div class="stat-label">Median value per person/year of search engines</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">$Trillions</div>
+        <div class="stat-label">Global value of search technology</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Additional lines of code you write</div>
+      </div>
+    </div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>The AI would build a search engine after years of development</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>The AI would direct you to the nearest library</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>The AI couldn't create a search engine without human help</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>Simply by asking, you'd have trillions of dollars in value — the AI can do anything humans could do, just by asking</span></li>
+    </ul>
+    <div class="explanation" id="exp1">A superintelligent AI can do whatever humans can do. Since humans created search engines through years of work, the AI can produce the same result "just for the asking." This provides a useful lower bound on what such a machine can do — it only gets more impressive from there.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">Russell gives an argument about why n copies of a superintelligent machine would be even better than n human experts. What is the key advantage?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>The machines would work 24 hours a day without breaks</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>Each copy is cheaper than hiring a human</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>Unlike n humans who keep information in separate brains and communicate slowly (spending most of their time in meetings), the machine has no such separation — it can "connect the dots"</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>Machines can be replaced if one breaks down</span></li>
+    </ul>
+    <div class="explanation" id="exp2">In a collection of n humans, information is kept separately in n brains and communicated "very slowly and imperfectly" — that's why humans "spend most of their time in meetings." A machine has no such separation and can integrate all information. This multi-agent design is just a lower bound; other architectures work even better.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">Russell describes three limitations of superintelligent AI. Which of these is NOT one he identifies?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>Superintelligent AI cannot be omniscient — it can't determine the exact current state of the world or simulate the future perfectly</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>Real-world speed limits constrain how fast new knowledge can be acquired (e.g., drug experiments still take time)</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>Machines are not human, putting them at a disadvantage when modeling and predicting humans</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>Superintelligent AI would be unable to process natural language effectively</span></li>
+    </ul>
+    <div class="explanation" id="exp3">Russell identifies three real limits: (1) No omniscience — perfect world knowledge is unphysical; (2) Real-world speed limits — some experiments just take time; (3) Not being human — they must build human models from scratch using only external behavior and literature. He does NOT suggest language would be a limitation.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Russell calculates a rough dollar value for what human-level AI could be worth. He bases this on raising global living standards to the 88th percentile of the US. What is his ballpark figure?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>$750 billion</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>$76 trillion</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>$13,500 trillion (net present value)</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>$674 trillion per year</span></li>
+    </ul>
+    <div class="explanation" id="exp4">The extra income of $674 trillion/year (from raising global GDP from $76T to $750T) has a net present value of roughly $13,500 trillion at a 5% discount rate. "With numbers like this, it's not surprising that companies and countries are investing tens of billions annually" — though those sums are "minuscule compared to the size of the prize."</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">What does Russell mean by "Everything as a Service" (EaaS)?</div>
+    <div class="diagram">
+      <svg width="400" height="100" viewBox="0 0 400 100">
+        <rect x="10" y="25" width="100" height="50" rx="8" fill="#242838" stroke="#f59e0b"/>
+        <text x="60" y="50" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="bold">TaaS</text>
+        <text x="60" y="65" text-anchor="middle" fill="#94a3b8" font-size="9">Transportation</text>
+        <text x="60" y="15" text-anchor="middle" fill="#94a3b8" font-size="9">Today</text>
+        <line x1="130" y1="50" x2="160" y2="50" stroke="#f59e0b" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="160" y="25" width="100" height="50" rx="8" fill="#242838" stroke="#fbbf24"/>
+        <text x="210" y="50" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">EaaS</text>
+        <text x="210" y="65" text-anchor="middle" fill="#94a3b8" font-size="9">Everything</text>
+        <text x="210" y="15" text-anchor="middle" fill="#94a3b8" font-size="9">General AI</text>
+        <line x1="260" y1="50" x2="290" y2="50" stroke="#fbbf24" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="290" y="15" width="100" height="70" rx="8" fill="#242838" stroke="#22c55e"/>
+        <text x="340" y="38" text-anchor="middle" fill="#e2e8f0" font-size="9">Build bridges</text>
+        <text x="340" y="50" text-anchor="middle" fill="#e2e8f0" font-size="9">Improve crops</text>
+        <text x="340" y="62" text-anchor="middle" fill="#e2e8f0" font-size="9">Cook dinner</text>
+        <text x="340" y="74" text-anchor="middle" fill="#e2e8f0" font-size="9">Run elections</text>
+        <defs><marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f59e0b"/></marker></defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>General-purpose AI would give everyone access to an entire organization of software agents and robots capable of any task — no armies of specialists needed</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>A cloud subscription model for accessing AI tools</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>Replacing all human services with automated chatbots</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>A government program providing free AI access to citizens</span></li>
+    </ul>
+    <div class="explanation" id="exp5">Just as transportation went from massive multi-year expeditions (17th century) to "a few taps on your phone" (TaaS), general-purpose AI would make everything a service. Everyone could have "at their disposal an entire organization composed of software agents and physical robots, capable of designing and building bridges, improving crop yields, cooking dinner for a hundred guests."</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Russell discusses personal AI tutoring as a transformative benefit. What makes this significant?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>AI tutors would replace all schools entirely</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>Personal tutoring is far more effective than classroom teaching but is unaffordable for most people — AI could provide it at negligible cost, realizing the potential of every child regardless of wealth</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>AI tutors would standardize education globally</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>AI tutors would make teachers obsolete within a decade</span></li>
+    </ul>
+    <div class="explanation" id="exp6">Personal tutoring "is known to be far more effective than classroom teaching, but when done by humans it is simply unaffordable — and always will be — for the vast majority of people." AI tutoring could unlock every child's potential at negligible cost, regardless of poverty.</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Russell mentions that the "pie of pride" sets a fundamental limit even with superintelligent AI. What does he mean?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>AI systems will compete with each other for status</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>Some people will refuse to accept help from machines</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>AI cannot eliminate jealousy from human nature</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>Only 1% can be in the top 1% — if happiness requires relative superiority, 99% will be unhappy even with splendid lifestyles, so cultures must down-weight pride and envy</span></li>
+    </ul>
+    <div class="explanation" id="exp7">While AI can make the pie of goods and services essentially infinite, "the pie of pride is finite: only 1 percent of people can be in the top 1 percent on any given metric." Russell argues it will be important "for our cultures to gradually down-weight pride and envy as central elements of perceived self-worth."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">How does Russell explain the "multiplier effect" of AI on human productivity?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>With automated self-driving taxis, 10 people could manage 1,000 vehicles — each person producing 100x as much transportation. The same applies to manufacturing and raw material extraction.</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>AI would write all software, allowing engineers to focus on creative work</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>AI-generated art would replace human artists</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>Robot workers would be taxed to fund universal basic income</span></li>
+    </ul>
+    <div class="explanation" id="exp8">The core insight: "the average human can never expect to consume more than the average human produces." AI increases per-capita production — with automated taxis, 10 people manage 1,000 vehicles, so each produces 100x as much transportation. "The same goes for manufacturing the cars and for extracting the raw materials."</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">Why does Russell argue that machines will have a harder time understanding humans than understanding physics or biology?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>Human behavior is completely random and unpredictable</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>Humans will deliberately deceive machines to prevent being understood</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>Humans can simulate each other's mental states cheaply (we just hit our thumb with a hammer to know how it feels), but machines must build human models from scratch using only external behavior and literature</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>Psychology is not a real science, so machines can't learn from it</span></li>
+    </ul>
+    <div class="explanation" id="exp9">Humans have similar brains, so we can simulate each other's experience "for free" — "I don't need to be an expert on neural sensory systems to know what it feels like when you hit your thumb with a hammer." Machines "have access only to our external behavior, plus all the neuroscience and psychology literature" and must build understanding from scratch.</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 3 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter2.html" class="btn" style="margin-right:0.5rem;">← Chapter 2</a>
+    <a href="chapter4.html" class="btn">Chapter 4 →</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've mastered Russell's vision of AI's future impact.";
+  else if (pct >= 0.8) msg = "Excellent — strong grasp of both the possibilities and limitations.";
+  else if (pct >= 0.6) msg = "Good work! Review the sections on superintelligence limitations and the economic argument.";
+  else msg = "Chapter 3 covers a lot of ground — re-reading will help clarify the scale of what's at stake.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

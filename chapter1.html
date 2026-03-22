@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: If We Succeed — Quiz</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242838;
+    --accent: #6c63ff;
+    --accent-glow: rgba(108, 99, 255, 0.25);
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3348;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(108,99,255,0.1) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  .header h1 { font-size: 1.8rem; position: relative; }
+  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--accent); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar {
+    background: var(--surface);
+    border-radius: 999px;
+    height: 8px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.3s;
+  }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-incorrect { border-color: var(--incorrect); }
+  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(108,99,255,0.08); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
+  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
+  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .option-letter {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .selected-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .explanation {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(108,99,255,0.06);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    display: none;
+  }
+  .explanation.visible { display: block; }
+  /* Visual elements */
+  .visual-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    color: var(--muted);
+  }
+  .visual-box .highlight { color: var(--accent); font-weight: bold; }
+  .visual-box .label { color: var(--correct); }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--accent);
+  }
+  .timeline-item {
+    padding: 0.4rem 0 0.4rem 1rem;
+    position: relative;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0.7rem;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .timeline-item .year { color: var(--accent); font-weight: 600; }
+  .diagram {
+    text-align: center;
+    margin: 0.75rem 0;
+    padding: 1rem;
+    background: var(--surface2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .diagram svg { max-width: 100%; }
+  .score-card {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    display: none;
+  }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+  .score-label { color: var(--muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">← All Chapters</a>
+  <span class="chapter-num">Chapter 1</span>
+  <h1>If We Succeed</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">Russell lists five candidates for "the biggest event in the future of humanity." Which did he argue would win?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>We all live forever (medical solution to aging)</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>We are visited by a superior alien civilization</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>We invent superintelligent AI</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>We invent faster-than-light travel and conquer the universe</span></li>
+    </ul>
+    <div class="explanation" id="exp0">Superintelligent AI would be the winner because it could help us achieve all the others — avoid catastrophes, achieve eternal life, and faster-than-light travel, if possible. Russell called it analogous to the arrival of a superior alien civilization, but much more likely.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">The "official" beginning of AI as a field is traced to a 1956 summer program. Where was it held, and who organized it?</div>
+    <div class="timeline">
+      <div class="timeline-item"><span class="year">1956</span> — Summer program that launched AI</div>
+      <div class="timeline-item"><span class="year">1995</span> — Russell & Norvig publish <em>AI: A Modern Approach</em></div>
+      <div class="timeline-item"><span class="year">2016</span> — AlphaGo defeats Lee Sedol</div>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>MIT — organized by Norbert Wiener and Alan Turing</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>Dartmouth College — organized by John McCarthy and Marvin Minsky (with Shannon and Rochester)</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>Stanford — organized by John McCarthy and Herbert Simon</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>Princeton — organized by Claude Shannon and Alan Turing</span></li>
+    </ul>
+    <div class="explanation" id="exp1">McCarthy and Minsky persuaded Claude Shannon and Nathaniel Rochester to co-organize the 1956 Dartmouth summer program. They proposed that "a significant advance can be made… if a carefully selected group of scientists work on it together for a summer." It took much longer than a summer.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">Russell tells the story of Lord Rutherford and Leo Szilard to illustrate what point?</div>
+    <div class="visual-box">  <span class="label">Sept 11, 1933:</span> Rutherford declares atomic energy is "moonshine"
+  <span class="label">Sept 12, 1933:</span> Szilard reads the report over breakfast
+  <span class="label">Same day:</span>     Szilard invents the nuclear chain reaction
+
+  <span class="highlight">Time from "impossible" to "solved": &lt; 24 hours</span></div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>Nuclear physics is more dangerous than AI</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>Experts are always wrong about scientific progress</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>AI breakthroughs require military funding</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>Betting against human ingenuity is foolhardy — breakthroughs can happen overnight</span></li>
+    </ul>
+    <div class="explanation" id="exp2">The problem of liberating nuclear energy went from "impossible" to essentially solved in less than 24 hours. Russell uses this to warn against a "denialism" in the AI community that bets against AI ever reaching human-level intelligence.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">What is the "standard model" of AI as Russell defines it?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>Machines are intelligent to the extent that their actions can be expected to achieve their objectives</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>Machines should be designed to mimic the structure of the human brain</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>AI systems should pass the Turing test to be considered intelligent</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>Machines should pursue a set of programmed ethical rules</span></li>
+    </ul>
+    <div class="explanation" id="exp3">The standard model defines intelligence as optimizing a given objective. Humans give machines objectives, and the machines pursue them. Russell argues this widespread scheme — shared by AI, control theory, economics, and statistics — is fundamentally flawed.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Who warned in 1960 that "we had better be quite sure that the purpose put into the machine is the purpose which we really desire"?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>Alan Turing</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>John McCarthy</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>Norbert Wiener</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>Marvin Minsky</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Norbert Wiener, a legendary MIT mathematician, wrote "Some Moral and Technical Consequences of Automation" in 1960 after seeing Arthur Samuel's checker-playing program learn to beat its creator. He identified the core danger of the standard model decades before anyone else took it seriously.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">Russell describes how content-selection algorithms on social media illustrate the problem with the standard model. What do these algorithms optimize for, and what is the unintended consequence?</div>
+    <div class="diagram">
+      <svg width="420" height="110" viewBox="0 0 420 110">
+        <rect x="10" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#6c63ff"/>
+        <text x="65" y="60" text-anchor="middle" fill="#e2e8f0" font-size="12">Maximize</text>
+        <text x="65" y="75" text-anchor="middle" fill="#6c63ff" font-size="12">click-through</text>
+        <line x1="120" y1="55" x2="155" y2="55" stroke="#6c63ff" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="155" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#a78bfa"/>
+        <text x="210" y="60" text-anchor="middle" fill="#e2e8f0" font-size="12">Make users more</text>
+        <text x="210" y="75" text-anchor="middle" fill="#a78bfa" font-size="12">predictable</text>
+        <line x1="265" y1="55" x2="300" y2="55" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="300" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#ef4444"/>
+        <text x="355" y="55" text-anchor="middle" fill="#e2e8f0" font-size="12">Push toward</text>
+        <text x="355" y="70" text-anchor="middle" fill="#ef4444" font-size="12">extreme views</text>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#6c63ff"/></marker>
+          <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#a78bfa"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>They optimize for user satisfaction, leading to filter bubbles</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>They optimize for click-through, which drives users toward extreme views because extreme users are more predictable</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>They optimize for time on site, accidentally creating addiction</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>They optimize for ad revenue by showing only political content</span></li>
+    </ul>
+    <div class="explanation" id="exp5">The algorithm learns to make users more predictable so it can show items they're likely to click. People with extreme political views are more predictable. Russell says the consequences include "the resurgence of fascism" and threats to democracies, the EU, and NATO — "not bad for a few lines of code."</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Russell compares the anticipated arrival of superintelligent AI to receiving notice from a superior alien civilization. He illustrates humanity's underwhelming response with a fictional email exchange. What is the punchline?</div>
+    <div class="visual-box"><span class="label">From:</span> Superior Alien Civilization
+<span class="label">Subject:</span> Contact
+Be warned: we shall arrive in 30–50 years.
+
+<span class="label">From:</span> humanity@UN.org
+<span class="label">Subject:</span> Out of office: Re: Contact
+<span class="highlight">Humanity is currently out of the office.</span>
+We will respond to your message when we return. ☺</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>Humanity declares war on the aliens immediately</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>Humanity forms an international committee to study the threat</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>Humanity sends back an out-of-office auto-reply</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>Humanity ignores the email entirely</span></li>
+    </ul>
+    <div class="explanation" id="exp6">The joke captures how our response to the arrival of superintelligent AI has been "underwhelming" — we're essentially not paying attention to what could be the biggest event in human history.</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Russell cites the ancient motif of "three wishes" stories. What principle do they illustrate about AI?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>AI systems should be limited to three goals at a time</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>Getting exactly what you ask for can be disastrous — the third wish always undoes the first two</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>Humans are inherently bad at wishing for what they really want</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>AI should grant user requests only after three confirmations</span></li>
+    </ul>
+    <div class="explanation" id="exp7">In every three-wishes story, the third wish undoes the first two. This illustrates that if we put the wrong objective into a more-intelligent-than-us machine, it achieves that objective — and we lose. We've known this peril "for thousands of years."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">Russell proposes a revised definition of what makes machines beneficial. Fill in the blank: "Machines are beneficial to the extent that their actions can be expected to achieve ___."</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>their objectives</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>optimal outcomes</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>safe behavior</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>our objectives</span></li>
+    </ul>
+    <div class="explanation" id="exp8">The key shift is from "their objectives" (the standard model) to "our objectives." Because machines will inevitably be uncertain about our objectives, they will defer to humans, ask permission, accept correction, and allow themselves to be switched off — uncertainty is "a feature, not a bug."</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">What does Russell identify as the AI community's bus-driver analogy?</div>
+    <div class="visual-box">  🚌 → → → → → → → 🏔️💥
+
+  <span class="highlight">"Yes, I am driving as hard as I can towards a cliff,
+   but trust me, we'll run out of gas before we get there!"</span></div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>AI researchers denying that success is possible, as an excuse not to prepare for it</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>Companies racing to build AI without thinking about profit</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>Governments funding AI without understanding it</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>Users trusting AI systems with too much personal data</span></li>
+    </ul>
+    <div class="explanation" id="exp9">Russell describes a "denialism" emerging in the AI community — even going so far as denying the <em>possibility</em> of achieving AI's long-term goals. This is like a bus driver heading toward a cliff with all of humanity as passengers, saying "trust me, we'll run out of gas first."</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 1 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter2.html" class="btn">Next: Chapter 2 →</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've mastered the key arguments of Chapter 1.";
+  else if (pct >= 0.8) msg = "Excellent — you have a strong grasp of Russell's opening arguments.";
+  else if (pct >= 0.6) msg = "Good effort! Consider re-reading the sections on the standard model and Wiener's warning.";
+  else msg = "This chapter is foundational — it's worth another read to understand Russell's core thesis.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

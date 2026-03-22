@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Intelligence in Humans and Machines — Quiz</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242838;
+    --accent: #06b6d4;
+    --accent-glow: rgba(6, 182, 212, 0.25);
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3348;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #0c4a6e 0%, #155e75 50%, #0c4a6e 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 70% 50%, rgba(6,182,212,0.1) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+  .header h1 { font-size: 1.8rem; position: relative; }
+  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--accent); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #67e8f9); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s; }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-incorrect { border-color: var(--incorrect); }
+  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(6,182,212,0.08); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
+  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
+  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(6,182,212,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
+  .visual-box .highlight { color: var(--accent); font-weight: bold; }
+  .visual-box .label { color: var(--correct); }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
+  .comparison-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
+  .comparison-table th { background: var(--surface2); color: var(--accent); padding: 0.5rem; text-align: left; border-bottom: 2px solid var(--accent); }
+  .comparison-table td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
+  .comparison-table tr:hover { background: rgba(6,182,212,0.04); }
+  .score-card { background: linear-gradient(135deg, #0c4a6e, #155e75); border: 2px solid var(--accent); border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+  .score-label { color: var(--muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">← All Chapters</a>
+  <span class="chapter-num">Chapter 2</span>
+  <h1>Intelligence in Humans and Machines</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">Russell defines intelligence as a relationship among three things. Which of the following best captures his definition?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>Intelligence is the ability to pass a Turing test</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>Intelligence is measured by IQ scores across cognitive tasks</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>An entity is intelligent to the extent that what it does is likely to achieve what it wants, given what it has perceived</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>Intelligence is the capacity for abstract reasoning and language</span></li>
+    </ul>
+    <div class="explanation" id="exp0">Russell's definition connects perception, action, and objectives: "an entity is intelligent to the extent that what it does is likely to achieve what it wants, given what it has perceived." All other characteristics of intelligence — thinking, learning, inventing — serve this core capacity.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">How does <em>E. coli</em> demonstrate a primitive form of intelligence?</div>
+    <div class="diagram">
+      <svg width="380" height="90" viewBox="0 0 380 90">
+        <text x="10" y="20" fill="#94a3b8" font-size="11">E. coli behavior:</text>
+        <rect x="10" y="30" width="80" height="40" rx="6" fill="#242838" stroke="#06b6d4"/>
+        <text x="50" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Sense</text>
+        <text x="50" y="67" text-anchor="middle" fill="#06b6d4" font-size="10">glucose ↑</text>
+        <line x1="90" y1="50" x2="130" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#a1)"/>
+        <rect x="130" y="30" width="100" height="40" rx="6" fill="#242838" stroke="#06b6d4"/>
+        <text x="180" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Swim longer</text>
+        <text x="180" y="67" text-anchor="middle" fill="#06b6d4" font-size="10">tumble less</text>
+        <line x1="230" y1="50" x2="270" y2="50" stroke="#22c55e" stroke-width="2" marker-end="url(#a2)"/>
+        <rect x="270" y="30" width="100" height="40" rx="6" fill="#242838" stroke="#22c55e"/>
+        <text x="320" y="55" text-anchor="middle" fill="#22c55e" font-size="11">Finds glucose</text>
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#06b6d4"/></marker>
+          <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#22c55e"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>It learns from past mistakes and avoids poison</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>When it senses increasing glucose, it swims longer and tumbles less — its behavior varies with what it perceives</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>It communicates with other bacteria to find food collectively</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>It uses a simple neural network to navigate</span></li>
+    </ul>
+    <div class="explanation" id="exp1">E. coli's behavior varies according to its environment — when it senses increasing glucose concentration, it swims longer and tumbles less. This fits Russell's definition: what it does (swim toward glucose) achieves what it wants (more glucose), given what it perceives (increasing concentration). It has no brain — just chemical reactions — but it has a basic form of intelligence. However, it never learns.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">What is the "Baldwin effect" and why does it matter for intelligence?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>Learning changes DNA directly, speeding up genetic evolution</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>Intelligent organisms tend to develop larger brains over time</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>Evolution favors organisms that resist environmental change</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>The capacity for learning speeds up evolution because the organism fills in details that evolution would otherwise have to specify</span></li>
+    </ul>
+    <div class="explanation" id="exp2">The Baldwin effect (proposed in 1896) explains how learning accelerates evolution: if evolution only needs to specify "472***" and the organism learns the last three digits during its lifetime, evolution's job is much easier. Learning doesn't change DNA directly, but it acts as an evolutionary shortcut. Culture accelerates this further.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">Russell discusses the brain's reward system. What is the evolutionary problem he identifies with reward signals, and what example illustrates it?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>The reward system is too slow, making humans poor at avoiding danger — illustrated by snakebite deaths</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>The reward system only works for immediate gratification — illustrated by savings rates</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>Reward signals can be misaligned with evolutionary fitness — the pygmy three-toed sloth may be going extinct due to addiction to Valium-like compounds in its diet</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>The reward system breaks down in old age — illustrated by dementia</span></li>
+    </ul>
+    <div class="explanation" id="exp3">The brain's reward system is only a crude hint of what's good for evolutionary fitness. It can be "hacked" — through drugs, sugary drinks, or video game addiction. The pygmy three-toed sloth appears addicted to a Valium-like substance in its diet and may be going extinct. An entire species can disappear by satisfying its reward system in a maladaptive way.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Russell argues that consciousness is irrelevant to the risks posed by AI. What analogy does he use?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>If code will destroy humanity, learning it also produces consciousness doesn't change that prediction — "it's competence, not consciousness, that matters"</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>A calculator doesn't need consciousness to solve math problems</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>A self-driving car doesn't need to feel fear to brake</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>Animals can be dangerous without being self-aware</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Russell says: suppose you analyze code that will destroy the human race. Then you learn it also creates machine consciousness. Does that change your prediction? Not at all. Hollywood plots about machines "mysteriously becoming conscious and hating humans" miss the point entirely.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">What characteristics of a problem environment influence how an AI agent should be designed?</div>
+    <table class="comparison-table">
+      <tr><th>Characteristic</th><th>Easy (e.g., Chess)</th><th>Hard (e.g., Driving)</th></tr>
+      <tr><td>Observability</td><td>Fully observable</td><td>Partially observable</td></tr>
+      <tr><td>State space</td><td>Discrete</td><td>Continuous</td></tr>
+      <tr><td>Other agents?</td><td>One opponent</td><td>Many agents</td></tr>
+      <tr><td>Outcomes</td><td>Deterministic</td><td>Unpredictable</td></tr>
+      <tr><td>Rules</td><td>Known</td><td>Partially unknown</td></tr>
+    </table>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>Only whether the environment is discrete or continuous</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>Only the number of possible actions and time horizon</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>Only whether rules are known or unknown</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>All of the above plus dynamics, time horizon, and whether other agents are present — yielding at least 192 problem types</span></li>
+    </ul>
+    <div class="explanation" id="exp5">Russell lists at least six characteristics: observability, discrete/continuous, other agents, predictability of outcomes, known/unknown rules, dynamic vs. static environments, and the decision time horizon. Multiplying choices gives 192+ types. AI has made the most progress on the easier types (observable, discrete, deterministic, known rules).</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Why does Russell say comparing "machine IQ" to human IQ is nonsensical?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>Machines don't have brains so IQ doesn't apply</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>Human IQ correlates across cognitive activities, but machines have sharp boundaries of competence — like asking a horse to pole-vault</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>IQ tests are culturally biased against machines</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>Machines are too intelligent for IQ to be measured</span></li>
+    </ul>
+    <div class="explanation" id="exp6">"Trying to assign an IQ to machines is like trying to get four-legged animals to compete in a human decathlon. True, horses can run fast and jump high, but they have a lot of trouble with pole-vaulting and throwing the discus." AlphaZero is superhuman at Go, chess, and shogi but literally cannot drive a car or teach a class.</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Russell discusses four types of agent programs. Which type connects perception directly to action without any reasoning or deliberation?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>Knowledge-based agent</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>Reinforcement learning agent</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>Reflex agent</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>Utility-maximizing agent</span></li>
+    </ul>
+    <div class="explanation" id="exp7">Reflex agents connect perception directly to action — like the human blinking reflex. The objective isn't represented in the agent; someone else has to decide everything in advance. Russell gives the example: "if <rapidly looming region in visual field> then <blink>." The reflex doesn't "know what it's doing."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">What happened when Google Photos' image-labeling AI made a classification error in 2015, and what deeper problem does this illustrate?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>It labeled photos of Black people as "gorillas" — illustrating how a loss function that treats all misclassifications equally can produce catastrophically offensive results</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>It confused dogs and cats — illustrating the limits of deep learning</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>It mislabeled food items — illustrating the need for more training data</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>It confused celebrities — illustrating privacy concerns</span></li>
+    </ul>
+    <div class="explanation" id="exp8">The Google Photos labeling incident illustrates the critical difference between perceptual AI (providing probability estimates) and decision-making AI (taking actions with consequences). When AI labels images automatically, misclassification costs are not equal — the loss function must account for the real-world impact of different types of errors.</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">Russell argues that research on "narrow AI" or "tool AI" often contributes to general-purpose AI. What example does he give to support this?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>Spam filters led to advances in natural language understanding</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>AlphaGo's team improved general-purpose techniques (lookahead search + reinforcement learning) rather than writing Go-specific code — and AlphaZero then beat world-best programs at Go, chess, and shogi</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>Self-driving car research led to breakthroughs in robotics</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>Voice assistants led to improvements in machine translation</span></li>
+    </ul>
+    <div class="explanation" id="exp9">The AlphaGo team didn't write Go-specific code. They improved two general-purpose techniques — lookahead search and reinforcement learning. AlphaZero then used those techniques to master Go, chess, and shogi in one day. Similarly, LeCun's work on handwritten digit recognition produced convolutional neural networks, which revolutionized multiple fields.</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 2 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter1.html" class="btn" style="margin-right:0.5rem;">← Chapter 1</a>
+    <a href="chapter3.html" class="btn">Chapter 3 →</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've thoroughly grasped Russell's analysis of intelligence.";
+  else if (pct >= 0.8) msg = "Excellent — solid understanding of agents, environments, and the standard model.";
+  else if (pct >= 0.6) msg = "Good work! Review the sections on agent types and the perception-to-decision gap.";
+  else msg = "Chapter 2 is dense with technical concepts — consider re-reading the sections on agents and objectives.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
