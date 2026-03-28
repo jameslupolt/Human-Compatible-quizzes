@@ -6,65 +6,68 @@
 <title>Chapter 2: Intelligence in Humans and Machines — Quiz</title>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #242838;
-    --accent: #06b6d4;
-    --accent-glow: rgba(6, 182, 212, 0.25);
-    --correct: #22c55e;
-    --incorrect: #ef4444;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #2d3348;
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top left, rgba(59,130,246,0.1), transparent 28%), linear-gradient(180deg, #0b1220 0%, #0f1117 55%, #11192a 100%); color: var(--text); line-height: 1.6; min-height: 100vh; }
-  .header { background: linear-gradient(135deg, #0c4a6e 0%, #155e75 50%, #0c4a6e 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 70% 50%, rgba(6,182,212,0.1) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
-  .header h1 { font-size: 1.8rem; position: relative; }
-  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
-  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
-  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
-  .nav-link:hover { color: var(--accent); }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .header { background: var(--bg); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+  .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
   .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
-  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #67e8f9); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
-  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
-  .question-card { background: linear-gradient(180deg, rgba(26,29,39,0.96), rgba(20,23,34,0.96)); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s, transform 0.2s ease; box-shadow: 0 18px 40px rgba(0,0,0,0.2); }
-  .question-card:hover { transform: translateY(-1px); }
-  .question-card.answered-correct { border-color: var(--correct); }
-  .question-card.answered-incorrect { border-color: var(--incorrect); }
-  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 4px; margin: 1.5rem 0; overflow: hidden; border: none; }
+  .progress-fill { height: 100%; background: var(--text-main); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; box-shadow: none; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
   .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
   .options { list-style: none; }
-  .options li { background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(30,34,48,0.96)); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
-  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(6,182,212,0.08); }
+  .options li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
   .options li.disabled { cursor: default; }
-  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
-  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
-  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
-  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
-  .selected-correct .option-letter { background: var(--correct); color: #fff; }
-  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
-  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
-  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(6,182,212,0.06); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { border-color: var(--correct-border); }
+  .option-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .selected-incorrect .option-letter { background: var(--incorrect-border); color: var(--incorrect-text); }
+  .reveal-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-muted); display: none; }
   .explanation.visible { display: block; }
-  .visual-box { background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96)); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
-  .visual-box .highlight { color: var(--accent); font-weight: bold; }
-  .visual-box .label { color: var(--correct); }
-  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96)); border-radius: 14px; border: 1px solid var(--border); overflow-x: auto; }
+  .visual-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--text-muted); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--correct-text); }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--bg); border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; }
   .comparison-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
-  .comparison-table th { background: var(--surface2); color: var(--accent); padding: 0.5rem; text-align: left; border-bottom: 2px solid var(--accent); }
+  .comparison-table th { background: var(--surface); color: var(--text-main); padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
   .comparison-table td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
-  .comparison-table tr:hover { background: rgba(6,182,212,0.04); }
-  .score-card { background: linear-gradient(135deg, #0c4a6e, #155e75); border: 1px solid rgba(125,211,252,0.32); border-radius: 18px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: 0 18px 40px rgba(0,0,0,0.22); }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: none; }
   .score-card.visible { display: block; }
   .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
-  .score-label { color: var(--muted); }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
   .score-message { margin-top: 1rem; font-size: 1rem; }
-  .btn { display: inline-block; background: linear-gradient(90deg, var(--accent), #7dd3fc); color: #fff; padding: 0.6rem 1.5rem; border: none; border-radius: 999px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn { display: inline-block; background: var(--text-main); color: var(--bg); padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 500; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
   .btn:hover { opacity: 0.85; }
 </style>
 </head>
@@ -98,16 +101,16 @@
     <div class="question-text">How does <em>E. coli</em> demonstrate a primitive form of intelligence?</div>
     <div class="diagram">
       <svg width="380" height="90" viewBox="0 0 380 90">
-        <text x="10" y="20" fill="#94a3b8" font-size="11">E. coli behavior:</text>
-        <rect x="10" y="30" width="80" height="40" rx="6" fill="#242838" stroke="#06b6d4"/>
-        <text x="50" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Sense</text>
+        <text x="10" y="20" fill="#a1a1aa" font-size="11">E. coli behavior:</text>
+        <rect x="10" y="30" width="80" height="40" rx="6" fill="#18181b" stroke="#06b6d4"/>
+        <text x="50" y="55" text-anchor="middle" fill="#f4f4f5" font-size="11">Sense</text>
         <text x="50" y="67" text-anchor="middle" fill="#06b6d4" font-size="10">glucose ↑</text>
         <line x1="90" y1="50" x2="130" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#a1)"/>
-        <rect x="130" y="30" width="100" height="40" rx="6" fill="#242838" stroke="#06b6d4"/>
-        <text x="180" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Swim longer</text>
+        <rect x="130" y="30" width="100" height="40" rx="6" fill="#18181b" stroke="#06b6d4"/>
+        <text x="180" y="55" text-anchor="middle" fill="#f4f4f5" font-size="11">Swim longer</text>
         <text x="180" y="67" text-anchor="middle" fill="#06b6d4" font-size="10">tumble less</text>
         <line x1="230" y1="50" x2="270" y2="50" stroke="#22c55e" stroke-width="2" marker-end="url(#a2)"/>
-        <rect x="270" y="30" width="100" height="40" rx="6" fill="#242838" stroke="#22c55e"/>
+        <rect x="270" y="30" width="100" height="40" rx="6" fill="#18181b" stroke="#22c55e"/>
         <text x="320" y="55" text-anchor="middle" fill="#22c55e" font-size="11">Finds glucose</text>
         <defs>
           <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#06b6d4"/></marker>

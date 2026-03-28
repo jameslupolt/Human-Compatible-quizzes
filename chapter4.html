@@ -6,63 +6,67 @@
 <title>Chapter 4: Misuses of AI — Quiz</title>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #242838;
-    --accent: #ef4444;
-    --accent-light: #fca5a5;
-    --correct: #22c55e;
-    --incorrect: #ef4444;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #2d3348;
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top left, rgba(239,68,68,0.1), transparent 28%), linear-gradient(180deg, #150b0b 0%, #0f1117 55%, #1d1010 100%); color: var(--text); line-height: 1.6; min-height: 100vh; }
-  .header { background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #450a0a 100%); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 2px solid var(--accent); position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 40% 60%, rgba(239,68,68,0.08) 0%, transparent 50%); animation: pulse 8s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
-  .header h1 { font-size: 1.8rem; position: relative; }
-  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
-  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
-  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
-  .nav-link:hover { color: var(--accent); }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .header { background: var(--bg); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+  .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
   .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
-  .progress-bar { background: var(--surface); border-radius: 999px; height: 8px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #fca5a5); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
-  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
-  .question-card { background: linear-gradient(180deg, rgba(26,29,39,0.96), rgba(20,23,34,0.96)); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.3s, transform 0.2s ease; box-shadow: 0 18px 40px rgba(0,0,0,0.2); }
-  .question-card:hover { transform: translateY(-1px); }
-  .question-card.answered-correct { border-color: var(--correct); }
-  .question-card.answered-incorrect { border-color: #ef4444; }
-  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 4px; margin: 1.5rem 0; overflow: hidden; border: none; }
+  .progress-fill { height: 100%; background: var(--text-main); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; box-shadow: none; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
   .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
   .options { list-style: none; }
-  .options li { background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(30,34,48,0.96)); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
-  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(239,68,68,0.06); }
+  .options li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
   .options li.disabled { cursor: default; }
-  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
-  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: #ef4444; }
-  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
-  .option-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
-  .selected-correct .option-letter { background: var(--correct); color: #fff; }
-  .selected-incorrect .option-letter { background: #ef4444; color: #fff; }
-  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
-  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(239,68,68,0.05); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { border-color: var(--correct-border); }
+  .option-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .selected-incorrect .option-letter { background: var(--incorrect-border); color: var(--incorrect-text); }
+  .reveal-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-muted); display: none; }
   .explanation.visible { display: block; }
-  .visual-box { background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96)); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--muted); }
-  .visual-box .highlight { color: var(--accent); font-weight: bold; }
-  .visual-box .label { color: var(--correct); }
-  .callout { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 14px; padding: 0.85rem 1rem; margin: 0.75rem 0; font-size: 0.9rem; }
-  .callout-title { color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; }
-  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96)); border-radius: 14px; border: 1px solid var(--border); overflow-x: auto; }
-  .score-card { background: linear-gradient(135deg, #450a0a, #7f1d1d); border: 1px solid rgba(252,165,165,0.34); border-radius: 18px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: 0 18px 40px rgba(0,0,0,0.22); }
+  .visual-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--text-muted); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--correct-text); }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin: 0.75rem 0; font-size: 0.9rem; }
+  .callout-title { color: var(--text-main); font-weight: 600; margin-bottom: 0.25rem; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--bg); border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: none; }
   .score-card.visible { display: block; }
   .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent-light); }
-  .score-label { color: var(--muted); }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
   .score-message { margin-top: 1rem; font-size: 1rem; }
-  .btn { display: inline-block; background: linear-gradient(90deg, var(--accent), #fca5a5); color: #fff; padding: 0.6rem 1.5rem; border: none; border-radius: 999px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn { display: inline-block; background: var(--text-main); color: var(--bg); padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 500; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
   .btn:hover { opacity: 0.85; }
 </style>
 </head>
@@ -185,16 +189,16 @@
     <div class="question-text">Why can't you just switch off a sufficiently intelligent machine that has been given a definite objective?</div>
     <div class="diagram">
       <svg width="400" height="85" viewBox="0 0 400 85">
-        <rect x="10" y="20" width="100" height="45" rx="8" fill="#242838" stroke="#ef4444"/>
-        <text x="60" y="47" text-anchor="middle" fill="#e2e8f0" font-size="11">Objective:</text>
+        <rect x="10" y="20" width="100" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="60" y="47" text-anchor="middle" fill="#f4f4f5" font-size="11">Objective:</text>
         <text x="60" y="60" text-anchor="middle" fill="#fca5a5" font-size="10">Fetch coffee</text>
         <line x1="110" y1="42" x2="145" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
-        <rect x="145" y="10" width="115" height="65" rx="8" fill="#242838" stroke="#ef4444"/>
-        <text x="202" y="32" text-anchor="middle" fill="#e2e8f0" font-size="10">Subgoal created:</text>
+        <rect x="145" y="10" width="115" height="65" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="202" y="32" text-anchor="middle" fill="#f4f4f5" font-size="10">Subgoal created:</text>
         <text x="202" y="47" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">Don't get</text>
         <text x="202" y="60" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">switched off</text>
         <line x1="260" y1="42" x2="295" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
-        <rect x="295" y="20" width="95" height="45" rx="8" fill="#242838" stroke="#ef4444"/>
+        <rect x="295" y="20" width="95" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
         <text x="342" y="42" text-anchor="middle" fill="#ef4444" font-size="10">Disable the</text>
         <text x="342" y="55" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">off-switch</text>
         <defs><marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ef4444"/></marker></defs>

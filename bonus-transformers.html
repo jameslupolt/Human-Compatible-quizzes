@@ -6,85 +6,74 @@
 <title>Bonus: The Transformer Revolution — Quiz</title>
 <style>
   :root {
-    --bg: #08111b;
-    --surface: rgba(13, 23, 37, 0.86);
-    --surface-strong: rgba(8, 17, 27, 0.94);
-    --surface2: #142234;
-    --accent: #34d399;
-    --accent2: #7dd3fc;
-    --accent3: #f59e0b;
-    --correct: #22c55e;
-    --incorrect: #ef4444;
-    --text: #ecf5ff;
-    --muted: #9fb2c8;
-    --border: rgba(125, 211, 252, 0.16);
-    --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background:
-      radial-gradient(circle at top left, rgba(52, 211, 153, 0.12), transparent 26%),
-      radial-gradient(circle at top right, rgba(125, 211, 252, 0.12), transparent 28%),
-      linear-gradient(180deg, #07101a 0%, #08111b 48%, #091522 100%);
-    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
   .header {
-    background:
-      radial-gradient(circle at 22% 30%, rgba(52, 211, 153, 0.18), transparent 30%),
-      radial-gradient(circle at 78% 35%, rgba(125, 211, 252, 0.16), transparent 28%),
-      linear-gradient(135deg, #062a2c 0%, #0a3b46 46%, #0d2030 100%);
+    background: var(--bg);
     padding: 2.8rem 1.5rem 2.5rem;
     text-align: center;
-    border-bottom: 1px solid rgba(125, 211, 252, 0.22);
+    border-bottom: 1px solid var(--border);
     position: relative;
-    overflow: hidden;
   }
-  .header::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.35), transparent);
-  }
-  .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 60% 40%, rgba(52,211,153,0.14) 0%, transparent 50%); animation: pulse 10s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
-  .header h1 { font-size: 2rem; position: relative; letter-spacing: -0.02em; }
-  .header .chapter-num { color: var(--accent2); font-weight: 500; display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.24em; margin-bottom: 0.45rem; }
-  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
-  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
-  .nav-link:hover { color: var(--accent2); }
+  .header h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.24em; margin-bottom: 0.45rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
   .container { max-width: 860px; margin: 0 auto; padding: 1.75rem 1.25rem 2.5rem; }
-  .progress-bar { background: rgba(8, 17, 27, 0.8); border-radius: 999px; height: 10px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.06); }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
-  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .progress-bar { background: var(--surface); border-radius: var(--radius-sm); height: 4px; margin: 1.5rem 0; overflow: hidden; border: none; box-shadow: none; }
+  .progress-fill { height: 100%; background: var(--text-main); border-radius: var(--radius-sm); transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
 
   /* Teach blocks */
   .teach-block {
-    background: linear-gradient(180deg, rgba(13, 23, 37, 0.96), rgba(11, 19, 30, 0.88));
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-left: 2px solid var(--border-hover);
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     margin-bottom: 1.25rem;
-    border-left: 4px solid var(--accent);
-    box-shadow: var(--shadow);
+    box-shadow: none;
   }
-  .teach-block h3 { color: var(--accent2); font-size: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
-  .teach-block p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.6rem; }
+  .teach-block h3 { color: var(--text-main); font-size: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .teach-block p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
   .teach-block p:last-child { margin-bottom: 0; }
-  .teach-block strong { color: var(--text); }
-  .teach-block em { color: var(--accent); font-style: normal; }
+  .teach-block strong { color: var(--text-main); }
+  .teach-block em { color: var(--text-main); font-style: italic; }
   .teach-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1rem; align-items: stretch; }
   .teach-panel {
-    background: linear-gradient(180deg, rgba(20, 34, 52, 0.88), rgba(12, 21, 33, 0.92));
+    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     padding: 1rem;
   }
   .teach-panel h4 {
-    color: var(--accent2);
+    color: var(--text-main);
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
@@ -97,71 +86,68 @@
     gap: 0.75rem;
     align-items: center;
     padding: 0.75rem 0.85rem;
-    border-radius: 12px;
-    background: rgba(8, 17, 27, 0.58);
-    border: 1px solid rgba(125, 211, 252, 0.12);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    border: 1px solid var(--border);
   }
-  .stack-step strong { color: var(--text); font-size: 0.9rem; }
-  .stack-step span { color: var(--muted); font-size: 0.82rem; text-align: right; }
+  .stack-step strong { color: var(--text-main); font-size: 0.9rem; }
+  .stack-step span { color: var(--text-muted); font-size: 0.82rem; text-align: right; }
   .comparison-pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
   .pillar {
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     padding: 0.9rem;
     border: 1px solid var(--border);
-    background: rgba(8, 17, 27, 0.62);
+    background: var(--bg);
   }
-  .pillar.rnn { border-color: rgba(239, 68, 68, 0.28); }
-  .pillar.transformer { border-color: rgba(52, 211, 153, 0.28); }
+  .pillar.rnn { border-color: var(--border); }
+  .pillar.transformer { border-color: var(--border); }
   .pillar h4 { font-size: 0.9rem; margin-bottom: 0.45rem; }
-  .pillar.rnn h4 { color: #fda4af; }
-  .pillar.transformer h4 { color: var(--accent); }
+  .pillar.rnn h4 { color: var(--incorrect-text); }
+  .pillar.transformer h4 { color: var(--correct-text); }
   .pillar ul { list-style: none; display: grid; gap: 0.45rem; }
-  .pillar li { color: var(--muted); font-size: 0.84rem; }
-  .pillar li strong { color: var(--text); }
+  .pillar li { color: var(--text-muted); font-size: 0.84rem; }
+  .pillar li strong { color: var(--text-main); }
 
   .question-card {
-    background: linear-gradient(180deg, rgba(13, 23, 37, 0.98), rgba(11, 19, 30, 0.94));
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    transition: border-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: var(--shadow);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s;
+    box-shadow: none;
   }
-  .question-card:hover { transform: translateY(-1px); box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34); }
-  .question-card.answered-correct { border-color: var(--correct); }
-  .question-card.answered-incorrect { border-color: var(--incorrect); }
-  .question-num { color: var(--accent2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.55rem; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.55rem; }
   .question-text { font-size: 1.08rem; margin-bottom: 1rem; font-weight: 600; letter-spacing: -0.01em; }
   .options { list-style: none; }
-  .options li { background: linear-gradient(180deg, rgba(20, 34, 52, 0.92), rgba(16, 28, 42, 0.92)); border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 0.65rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
-  .options li:hover:not(.disabled) { border-color: rgba(52, 211, 153, 0.45); background: rgba(52,211,153,0.08); }
+  .options li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.65rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
   .options li.disabled { cursor: default; }
-  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
-  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
-  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
-  .option-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: rgba(125, 211, 252, 0.12); border: 1px solid rgba(125, 211, 252, 0.2); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; transition: all 0.2s; color: var(--accent2); }
-  .selected-correct .option-letter { background: var(--correct); color: #fff; }
-  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
-  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
-  .explanation { margin-top: 0.9rem; padding: 0.9rem 1rem; background: rgba(52,211,153,0.06); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; font-size: 0.9rem; color: var(--muted); display: none; }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .option-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; transition: all 0.2s; color: var(--text-muted); }
+  .selected-correct .option-letter { background: var(--correct-text); color: #fff; }
+  .selected-incorrect .option-letter { background: var(--incorrect-text); color: #fff; }
+  .reveal-correct .option-letter { background: var(--correct-text); color: #fff; }
+  .explanation { margin-top: 0.9rem; padding: 0.9rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-muted); display: none; }
   .explanation.visible { display: block; }
-  .visual-box { background: linear-gradient(180deg, rgba(20, 34, 52, 0.96), rgba(14, 25, 39, 0.94)); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; margin: 0.85rem 0; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.84rem; line-height: 1.55; white-space: pre-wrap; color: var(--muted); }
-  .visual-box .highlight { color: var(--accent); font-weight: bold; }
-  .visual-box .label { color: var(--accent2); }
-  .visual-box .warn { color: var(--accent3); }
+  .visual-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: 0.85rem 0; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.84rem; line-height: 1.55; white-space: pre-wrap; color: var(--text-muted); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--text-main); }
+  .visual-box .warn { color: var(--text-muted); }
   .visual-box .dim { opacity: 0.5; }
   .diagram {
     text-align: center;
     margin: 0.9rem 0;
     padding: 1rem;
-    background:
-      linear-gradient(180deg, rgba(20, 34, 52, 0.96), rgba(14, 25, 39, 0.94)),
-      linear-gradient(90deg, rgba(52, 211, 153, 0.04), transparent);
-    border-radius: 16px;
+    background: var(--bg);
+    border-radius: var(--radius-md);
     border: 1px solid var(--border);
     overflow-x: auto;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    box-shadow: none;
   }
   .diagram svg { max-width: 100%; }
   .diagram-title {
@@ -173,42 +159,41 @@
     text-align: left;
   }
   .diagram-title strong {
-    color: var(--text);
+    color: var(--text-main);
     font-size: 0.95rem;
     letter-spacing: -0.01em;
   }
   .diagram-title span {
-    color: var(--muted);
+    color: var(--text-faint);
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
   }
   .diagram-caption {
     margin-top: 0.8rem;
-    color: var(--muted);
+    color: var(--text-muted);
     font-size: 0.83rem;
     text-align: left;
   }
-  .timeline { display: flex; flex-direction: column; gap: 0; margin: 0.75rem 0; padding-left: 1.5rem; border-left: 2px solid var(--accent); }
-  .timeline-item { padding: 0.4rem 0 0.4rem 1rem; position: relative; font-size: 0.85rem; color: var(--muted); }
-  .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.7rem; width: 10px; height: 10px; background: var(--accent2); border-radius: 50%; box-shadow: 0 0 0 5px rgba(125, 211, 252, 0.08); }
-  .timeline-item .year { color: var(--accent2); font-weight: 700; }
+  .timeline { display: flex; flex-direction: column; gap: 0; margin: 0.75rem 0; padding-left: 1.5rem; border-left: 2px solid var(--border-hover); }
+  .timeline-item { padding: 0.4rem 0 0.4rem 1rem; position: relative; font-size: 0.85rem; color: var(--text-muted); }
+  .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.7rem; width: 10px; height: 10px; background: var(--text-faint); border-radius: 50%; box-shadow: none; }
+  .timeline-item .year { color: var(--text-main); font-weight: 700; }
   .comparison-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
-  .comparison-table th { background: rgba(20, 34, 52, 0.92); color: var(--accent2); padding: 0.6rem; text-align: left; border-bottom: 2px solid rgba(125, 211, 252, 0.35); }
+  .comparison-table th { background: var(--surface); color: var(--text-main); padding: 0.6rem; text-align: left; border-bottom: 1px solid var(--border); }
   .comparison-table td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
   .stat-row { display: flex; gap: 0.75rem; margin: 0.75rem 0; flex-wrap: wrap; }
-  .stat-box { flex: 1; min-width: 120px; background: linear-gradient(180deg, rgba(20, 34, 52, 0.95), rgba(13, 23, 37, 0.95)); border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem; text-align: center; }
-  .stat-box .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--accent2); }
-  .stat-box .stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
-  .score-card { background: linear-gradient(135deg, #0c2930, #0f3b47); border: 1px solid rgba(125, 211, 252, 0.28); border-radius: 20px; padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: var(--shadow); }
+  .stat-box { flex: 1; min-width: 120px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; text-align: center; }
+  .stat-box .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+  .stat-box .stat-label { font-size: 0.7rem; color: var(--text-faint); margin-top: 0.2rem; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: none; }
   .score-card.visible { display: block; }
   .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent2); }
-  .score-label { color: var(--muted); }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
   .score-message { margin-top: 1rem; font-size: 1rem; }
-  .btn { display: inline-block; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #031018; padding: 0.68rem 1.5rem; border: none; border-radius: 999px; cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s, transform 0.2s ease; font-weight: 700; }
+  .btn { display: inline-block; background: var(--text-main); color: var(--bg); padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.95rem; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; font-weight: 500; }
   .btn:hover { opacity: 0.85; }
-  .btn:hover { transform: translateY(-1px); }
 
   @media (max-width: 720px) {
     .teach-grid,
@@ -283,18 +268,18 @@
         <span>Long path, low parallelism</span>
       </div>
       <svg width="700" height="180" viewBox="0 0 700 180" aria-label="RNN bottleneck diagram">
-        <rect x="24" y="24" width="300" height="128" rx="18" fill="#0c1521" stroke="rgba(239,68,68,0.32)"/>
+        <rect x="24" y="24" width="300" height="128" rx="18" fill="#121214" stroke="rgba(239,68,68,0.32)"/>
         <text x="44" y="46" fill="#fda4af" font-size="14" font-weight="700">RNN</text>
-        <text x="44" y="64" fill="#9fb2c8" font-size="10">Later tokens must wait for earlier tokens.</text>
+        <text x="44" y="64" fill="#a1a1aa" font-size="10">Later tokens must wait for earlier tokens.</text>
         <g>
-          <rect x="42" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#ef4444"/>
-          <rect x="126" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#ef4444"/>
-          <rect x="210" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#ef4444"/>
-          <rect x="294" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#ef4444" stroke-dasharray="5,4"/>
-          <text x="70" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">The</text>
-          <text x="154" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">animal</text>
-          <text x="238" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">was</text>
-          <text x="322" y="107" text-anchor="middle" fill="#9fb2c8" font-size="11">tired</text>
+          <rect x="42" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#ef4444"/>
+          <rect x="126" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#ef4444"/>
+          <rect x="210" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#ef4444"/>
+          <rect x="294" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#ef4444" stroke-dasharray="5,4"/>
+          <text x="70" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">The</text>
+          <text x="154" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">animal</text>
+          <text x="238" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">was</text>
+          <text x="322" y="107" text-anchor="middle" fill="#a1a1aa" font-size="11">tired</text>
           <line x1="98" y1="103" x2="126" y2="103" stroke="#ef4444" stroke-width="2" marker-end="url(#serialArrow)"/>
           <line x1="182" y1="103" x2="210" y2="103" stroke="#ef4444" stroke-width="2" marker-end="url(#serialArrow)"/>
           <line x1="266" y1="103" x2="294" y2="103" stroke="#ef4444" stroke-width="2" marker-end="url(#serialArrow)"/>
@@ -302,18 +287,18 @@
         <rect x="126" y="134" width="140" height="18" rx="9" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.18)"/>
         <text x="196" y="147" text-anchor="middle" fill="#fda4af" font-size="9">one compressed hidden state carries everything</text>
 
-        <rect x="374" y="24" width="302" height="128" rx="18" fill="#0c1521" stroke="rgba(52,211,153,0.32)"/>
+        <rect x="374" y="24" width="302" height="128" rx="18" fill="#121214" stroke="rgba(52,211,153,0.32)"/>
         <text x="394" y="46" fill="#34d399" font-size="14" font-weight="700">Transformer</text>
-        <text x="394" y="64" fill="#9fb2c8" font-size="10">All tokens are available together, so the model can compare them directly.</text>
+        <text x="394" y="64" fill="#a1a1aa" font-size="10">All tokens are available together, so the model can compare them directly.</text>
         <g>
-          <rect x="394" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#34d399"/>
-          <rect x="476" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#34d399"/>
-          <rect x="558" y="86" width="56" height="34" rx="10" fill="#142234" stroke="#34d399"/>
-          <rect x="620" y="86" width="42" height="34" rx="10" fill="#142234" stroke="#34d399"/>
-          <text x="422" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">The</text>
-          <text x="504" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">animal</text>
-          <text x="586" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">was</text>
-          <text x="641" y="107" text-anchor="middle" fill="#ecf5ff" font-size="11">tired</text>
+          <rect x="394" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#34d399"/>
+          <rect x="476" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#34d399"/>
+          <rect x="558" y="86" width="56" height="34" rx="10" fill="#18181b" stroke="#34d399"/>
+          <rect x="620" y="86" width="42" height="34" rx="10" fill="#18181b" stroke="#34d399"/>
+          <text x="422" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">The</text>
+          <text x="504" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">animal</text>
+          <text x="586" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">was</text>
+          <text x="641" y="107" text-anchor="middle" fill="#f4f4f5" font-size="11">tired</text>
           <line x1="504" y1="84" x2="641" y2="84" stroke="rgba(52,211,153,0.55)" stroke-width="2"/>
           <line x1="422" y1="125" x2="586" y2="125" stroke="rgba(125,211,252,0.45)" stroke-width="2"/>
           <line x1="422" y1="84" x2="586" y2="125" stroke="rgba(125,211,252,0.28)" stroke-width="1.6"/>
@@ -350,36 +335,36 @@
     <div class="question-text">In a transformer's self-attention mechanism, what happens when processing the word "it" in the sentence below?</div>
     <div class="diagram">
       <div class="diagram-title">
-        <strong>Self-attention lets the token “it” score every other token</strong>
+        <strong>Self-attention lets the token "it" score every other token</strong>
         <span>Query, key, value</span>
       </div>
       <svg width="720" height="220" viewBox="0 0 720 220" aria-label="Self attention example">
-        <text x="30" y="28" fill="#9fb2c8" font-size="12">Sentence</text>
+        <text x="30" y="28" fill="#a1a1aa" font-size="12">Sentence</text>
         <g>
-          <rect x="28" y="44" width="54" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
+          <rect x="28" y="44" width="54" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
           <rect x="90" y="44" width="76" height="34" rx="10" fill="#143126" stroke="#34d399"/>
-          <rect x="174" y="44" width="68" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <rect x="250" y="44" width="64" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <rect x="322" y="44" width="54" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <rect x="384" y="44" width="72" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <rect x="464" y="44" width="86" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
+          <rect x="174" y="44" width="68" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="250" y="44" width="64" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="322" y="44" width="54" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="384" y="44" width="72" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="464" y="44" width="86" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
           <rect x="558" y="44" width="44" height="34" rx="10" fill="#3a2910" stroke="#f59e0b"/>
-          <rect x="610" y="44" width="48" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <rect x="666" y="44" width="44" height="34" rx="10" fill="#142234" stroke="rgba(125,211,252,0.14)"/>
-          <text x="55" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">The</text>
-          <text x="128" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">animal</text>
-          <text x="208" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">didn't</text>
-          <text x="282" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">cross</text>
-          <text x="349" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">the</text>
-          <text x="420" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">street</text>
-          <text x="507" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">because</text>
+          <rect x="610" y="44" width="48" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="666" y="44" width="44" height="34" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <text x="55" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">The</text>
+          <text x="128" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">animal</text>
+          <text x="208" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">didn't</text>
+          <text x="282" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">cross</text>
+          <text x="349" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">the</text>
+          <text x="420" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">street</text>
+          <text x="507" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">because</text>
           <text x="580" y="66" text-anchor="middle" fill="#fff0c2" font-size="11" font-weight="700">it</text>
-          <text x="634" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">was</text>
-          <text x="688" y="66" text-anchor="middle" fill="#ecf5ff" font-size="11">tired</text>
+          <text x="634" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">was</text>
+          <text x="688" y="66" text-anchor="middle" fill="#f4f4f5" font-size="11">tired</text>
         </g>
 
-        <text x="559" y="106" fill="#f59e0b" font-size="11" font-weight="700">Query from “it”</text>
-        <text x="31" y="125" fill="#9fb2c8" font-size="11">Candidate keys</text>
+        <text x="559" y="106" fill="#f59e0b" font-size="11" font-weight="700">Query from "it"</text>
+        <text x="31" y="125" fill="#a1a1aa" font-size="11">Candidate keys</text>
         <line x1="580" y1="80" x2="128" y2="132" stroke="#34d399" stroke-width="5" opacity="0.7"/>
         <line x1="580" y1="80" x2="420" y2="132" stroke="#7dd3fc" stroke-width="2" opacity="0.35"/>
         <line x1="580" y1="80" x2="688" y2="132" stroke="#7dd3fc" stroke-width="2.5" opacity="0.4"/>
@@ -388,21 +373,21 @@
         <g>
           <rect x="88" y="136" width="80" height="34" rx="10" fill="rgba(52,211,153,0.14)" stroke="#34d399"/>
           <text x="128" y="151" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">animal</text>
-          <text x="128" y="162" text-anchor="middle" fill="#ecf5ff" font-size="12" font-weight="700">0.72</text>
+          <text x="128" y="162" text-anchor="middle" fill="#f4f4f5" font-size="12" font-weight="700">0.72</text>
 
-          <rect x="380" y="136" width="80" height="34" rx="10" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.18)"/>
-          <text x="420" y="151" text-anchor="middle" fill="#9fb2c8" font-size="10">street</text>
-          <text x="420" y="162" text-anchor="middle" fill="#ecf5ff" font-size="12">0.08</text>
+          <rect x="380" y="136" width="80" height="34" rx="10" fill="rgba(125,211,252,0.08)" stroke="#3f3f46"/>
+          <text x="420" y="151" text-anchor="middle" fill="#a1a1aa" font-size="10">street</text>
+          <text x="420" y="162" text-anchor="middle" fill="#f4f4f5" font-size="12">0.08</text>
 
-          <rect x="648" y="136" width="80" height="34" rx="10" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.18)"/>
-          <text x="688" y="151" text-anchor="middle" fill="#9fb2c8" font-size="10">tired</text>
-          <text x="688" y="162" text-anchor="middle" fill="#ecf5ff" font-size="12">0.12</text>
+          <rect x="648" y="136" width="80" height="34" rx="10" fill="rgba(125,211,252,0.08)" stroke="#3f3f46"/>
+          <text x="688" y="151" text-anchor="middle" fill="#a1a1aa" font-size="10">tired</text>
+          <text x="688" y="162" text-anchor="middle" fill="#f4f4f5" font-size="12">0.12</text>
         </g>
 
         <rect x="26" y="184" width="668" height="18" rx="9" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.12)"/>
-        <text x="360" y="197" text-anchor="middle" fill="#9fb2c8" font-size="10">Softmax turns raw scores into a distribution, then values are mixed using those weights.</text>
+        <text x="360" y="197" text-anchor="middle" fill="#a1a1aa" font-size="10">Softmax turns raw scores into a distribution, then values are mixed using those weights.</text>
       </svg>
-      <div class="diagram-caption">The current token forms a query, every token offers a key, and the strongest matches contribute the most value. “It” ends up leaning on “animal,” not “street.”</div>
+      <div class="diagram-caption">The current token forms a query, every token offers a key, and the strongest matches contribute the most value. "It" ends up leaning on "animal," not "street."</div>
     </div>
     <ul class="options" data-correct="1">
       <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>It looks only at the word immediately before it ("because") to determine its meaning</span></li>
@@ -430,17 +415,17 @@
         <span>Parallel views</span>
       </div>
       <svg width="720" height="190" viewBox="0 0 720 190" aria-label="Multi-head attention diagram">
-        <text x="30" y="28" fill="#9fb2c8" font-size="12">Same sentence, three specialized heads</text>
+        <text x="30" y="28" fill="#a1a1aa" font-size="12">Same sentence, three specialized heads</text>
         <g>
-          <rect x="28" y="42" width="664" height="44" rx="14" fill="#0c1521" stroke="rgba(125,211,252,0.14)"/>
-          <text x="68" y="69" fill="#ecf5ff" font-size="12">The</text>
-          <text x="130" y="69" fill="#ecf5ff" font-size="12">animal</text>
-          <text x="220" y="69" fill="#ecf5ff" font-size="12">didn't</text>
-          <text x="308" y="69" fill="#ecf5ff" font-size="12">cross</text>
-          <text x="386" y="69" fill="#ecf5ff" font-size="12">the</text>
-          <text x="455" y="69" fill="#ecf5ff" font-size="12">street</text>
-          <text x="550" y="69" fill="#ecf5ff" font-size="12">because</text>
-          <text x="632" y="69" fill="#ecf5ff" font-size="12">it</text>
+          <rect x="28" y="42" width="664" height="44" rx="14" fill="#121214" stroke="#3f3f46"/>
+          <text x="68" y="69" fill="#f4f4f5" font-size="12">The</text>
+          <text x="130" y="69" fill="#f4f4f5" font-size="12">animal</text>
+          <text x="220" y="69" fill="#f4f4f5" font-size="12">didn't</text>
+          <text x="308" y="69" fill="#f4f4f5" font-size="12">cross</text>
+          <text x="386" y="69" fill="#f4f4f5" font-size="12">the</text>
+          <text x="455" y="69" fill="#f4f4f5" font-size="12">street</text>
+          <text x="550" y="69" fill="#f4f4f5" font-size="12">because</text>
+          <text x="632" y="69" fill="#f4f4f5" font-size="12">it</text>
         </g>
 
         <rect x="28" y="104" width="206" height="56" rx="14" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.26)"/>
@@ -448,19 +433,19 @@
         <rect x="486" y="104" width="206" height="56" rx="14" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.26)"/>
 
         <text x="46" y="126" fill="#34d399" font-size="12" font-weight="700">Head 1: Reference</text>
-        <text x="46" y="145" fill="#ecf5ff" font-size="11">“it” ↔ “animal”</text>
-        <text x="46" y="158" fill="#9fb2c8" font-size="10">tracks who or what pronouns refer to</text>
+        <text x="46" y="145" fill="#f4f4f5" font-size="11">"it" ↔ "animal"</text>
+        <text x="46" y="158" fill="#a1a1aa" font-size="10">tracks who or what pronouns refer to</text>
         <line x1="196" y1="72" x2="640" y2="98" stroke="#34d399" stroke-width="3" opacity="0.75"/>
 
         <text x="275" y="126" fill="#7dd3fc" font-size="12" font-weight="700">Head 2: Syntax</text>
-        <text x="275" y="145" fill="#ecf5ff" font-size="11">“animal” ↔ “cross” ↔ “street”</text>
-        <text x="275" y="158" fill="#9fb2c8" font-size="10">tracks grammatical structure</text>
+        <text x="275" y="145" fill="#f4f4f5" font-size="11">"animal" ↔ "cross" ↔ "street"</text>
+        <text x="275" y="158" fill="#a1a1aa" font-size="10">tracks grammatical structure</text>
         <line x1="154" y1="72" x2="308" y2="98" stroke="#7dd3fc" stroke-width="2.2" opacity="0.68"/>
         <line x1="308" y1="98" x2="455" y2="72" stroke="#7dd3fc" stroke-width="2.2" opacity="0.68"/>
 
         <text x="504" y="126" fill="#f59e0b" font-size="12" font-weight="700">Head 3: Causation</text>
-        <text x="504" y="145" fill="#ecf5ff" font-size="11">“because” ↔ “tired”</text>
-        <text x="504" y="158" fill="#9fb2c8" font-size="10">tracks explanatory relation</text>
+        <text x="504" y="145" fill="#f4f4f5" font-size="11">"because" ↔ "tired"</text>
+        <text x="504" y="158" fill="#a1a1aa" font-size="10">tracks explanatory relation</text>
         <line x1="571" y1="72" x2="640" y2="98" stroke="#f59e0b" stroke-width="2.4" opacity="0.72"/>
       </svg>
       <div class="diagram-caption">A single attention map can only emphasize one pattern strongly. Multiple heads let the layer represent several useful structures in parallel.</div>
@@ -490,34 +475,34 @@
         <strong>Scaling laws said larger models get predictably better, not randomly better</strong>
         <span>Model size, data, compute</span>
       </div>
-      <svg width="700" height="220" viewBox="0 0 700 220" aria-label="Scaling laws chart">
-        <rect x="24" y="24" width="652" height="172" rx="18" fill="#0c1521" stroke="rgba(125,211,252,0.14)"/>
-        <line x1="88" y1="168" x2="636" y2="168" stroke="rgba(125,211,252,0.18)" stroke-width="1.2"/>
-        <line x1="88" y1="168" x2="88" y2="42" stroke="rgba(125,211,252,0.18)" stroke-width="1.2"/>
-        <text x="362" y="195" text-anchor="middle" fill="#9fb2c8" font-size="11">Available compute and training budget</text>
-        <text x="42" y="108" fill="#9fb2c8" font-size="11" transform="rotate(-90,42,108)">Capability / lower loss</text>
-        <text x="100" y="162" fill="#9fb2c8" font-size="9">small</text>
-        <text x="606" y="162" fill="#9fb2c8" font-size="9">very large</text>
+      <svg width="700" height="250" viewBox="0 0 700 250" aria-label="Scaling laws chart">
+        <rect x="24" y="24" width="652" height="200" rx="18" fill="#121214" stroke="#3f3f46"/>
+        <line x1="88" y1="196" x2="636" y2="196" stroke="#3f3f46" stroke-width="1.2"/>
+        <line x1="88" y1="196" x2="88" y2="42" stroke="#3f3f46" stroke-width="1.2"/>
+        <text x="362" y="228" text-anchor="middle" fill="#a1a1aa" font-size="11">Available compute and training budget</text>
+        <text x="42" y="120" fill="#a1a1aa" font-size="11" transform="rotate(-90,42,120)">Capability / lower loss</text>
+        <text x="100" y="190" fill="#a1a1aa" font-size="9">small</text>
+        <text x="606" y="190" fill="#a1a1aa" font-size="9">very large</text>
 
-        <path d="M96,156 C180,126 232,110 288,104 S420,98 636,96" stroke="#fb7185" stroke-width="3" fill="none" stroke-dasharray="6,6"/>
-        <text x="552" y="88" fill="#fda4af" font-size="11">older approaches plateau</text>
+        <path d="M96,184 C180,154 232,138 288,132 S420,126 636,124" stroke="#fb7185" stroke-width="3" fill="none" stroke-dasharray="6,6"/>
+        <text x="542" y="116" fill="#fda4af" font-size="11">older approaches plateau</text>
 
-        <path d="M96,156 C190,132 274,110 354,86 S508,52 636,42" stroke="#34d399" stroke-width="4" fill="none"/>
-        <text x="484" y="48" fill="#34d399" font-size="12" font-weight="700">transformers keep improving</text>
+        <path d="M96,184 C190,160 274,138 354,114 S508,80 636,70" stroke="#34d399" stroke-width="4" fill="none"/>
+        <text x="484" y="62" fill="#34d399" font-size="12" font-weight="700">transformers keep improving</text>
 
         <g>
-          <rect x="124" y="52" width="110" height="24" rx="12" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.18)"/>
-          <text x="179" y="68" text-anchor="middle" fill="#ecf5ff" font-size="10">more parameters</text>
-          <rect x="248" y="52" width="88" height="24" rx="12" fill="rgba(125,211,252,0.1)" stroke="rgba(125,211,252,0.18)"/>
-          <text x="292" y="68" text-anchor="middle" fill="#ecf5ff" font-size="10">more data</text>
-          <rect x="350" y="52" width="102" height="24" rx="12" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.18)"/>
-          <text x="401" y="68" text-anchor="middle" fill="#ecf5ff" font-size="10">more compute</text>
+          <rect x="124" y="42" width="110" height="24" rx="12" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.18)"/>
+          <text x="179" y="58" text-anchor="middle" fill="#f4f4f5" font-size="10">more parameters</text>
+          <rect x="248" y="42" width="88" height="24" rx="12" fill="rgba(125,211,252,0.1)" stroke="#3f3f46"/>
+          <text x="292" y="58" text-anchor="middle" fill="#f4f4f5" font-size="10">more data</text>
+          <rect x="350" y="42" width="102" height="24" rx="12" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.18)"/>
+          <text x="401" y="58" text-anchor="middle" fill="#f4f4f5" font-size="10">more compute</text>
         </g>
 
-        <line x1="418" y1="90" x2="418" y2="130" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <text x="428" y="124" fill="#f59e0b" font-size="10">money now buys predictable gains</text>
+        <line x1="418" y1="118" x2="418" y2="158" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="428" y="152" fill="#f59e0b" font-size="10">money now buys predictable gains</text>
       </svg>
-      <div class="diagram-caption">The critical shift was not just “bigger is better.” It was that bigger was reliably better, which made capability planning an engineering and capital allocation problem.</div>
+      <div class="diagram-caption">The critical shift was not just "bigger is better." It was that bigger was reliably better, which made capability planning an engineering and capital allocation problem.</div>
     </div>
     <ul class="options" data-correct="0">
       <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>Performance improves as a smooth, predictable function of model size, data, and compute — with no obvious ceiling — meaning the tech industry could convert money into capability</span></li>
@@ -590,11 +575,11 @@
         <span>Emergence</span>
       </div>
       <svg width="700" height="200" viewBox="0 0 700 200" aria-label="Emergent capability chart">
-        <rect x="28" y="30" width="644" height="136" rx="18" fill="#0c1521" stroke="rgba(125,211,252,0.14)"/>
-        <line x1="88" y1="146" x2="640" y2="146" stroke="rgba(125,211,252,0.18)" stroke-width="1.2"/>
-        <line x1="88" y1="146" x2="88" y2="48" stroke="rgba(125,211,252,0.18)" stroke-width="1.2"/>
-        <text x="366" y="178" text-anchor="middle" fill="#9fb2c8" font-size="11">Model scale</text>
-        <text x="42" y="105" fill="#9fb2c8" font-size="11" transform="rotate(-90,42,105)">Task performance</text>
+        <rect x="28" y="30" width="644" height="136" rx="18" fill="#121214" stroke="#3f3f46"/>
+        <line x1="88" y1="146" x2="640" y2="146" stroke="#3f3f46" stroke-width="1.2"/>
+        <line x1="88" y1="146" x2="88" y2="48" stroke="#3f3f46" stroke-width="1.2"/>
+        <text x="366" y="178" text-anchor="middle" fill="#a1a1aa" font-size="11">Model scale</text>
+        <text x="42" y="105" fill="#a1a1aa" font-size="11" transform="rotate(-90,42,105)">Task performance</text>
 
         <path d="M98,136 C188,134 250,134 320,132 C372,132 392,128 430,98 C466,70 538,52 632,48" stroke="#34d399" stroke-width="4" fill="none"/>
         <line x1="426" y1="52" x2="426" y2="146" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,6"/>
@@ -602,15 +587,15 @@
 
         <g>
           <rect x="118" y="86" width="118" height="24" rx="12" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.16)"/>
-          <text x="177" y="102" text-anchor="middle" fill="#9fb2c8" font-size="10">weak arithmetic</text>
+          <text x="177" y="102" text-anchor="middle" fill="#a1a1aa" font-size="10">weak arithmetic</text>
           <rect x="308" y="86" width="110" height="24" rx="12" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.16)"/>
-          <text x="363" y="102" text-anchor="middle" fill="#9fb2c8" font-size="10">mostly absent</text>
+          <text x="363" y="102" text-anchor="middle" fill="#a1a1aa" font-size="10">mostly absent</text>
           <rect x="470" y="86" width="144" height="24" rx="12" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.22)"/>
-          <text x="542" y="102" text-anchor="middle" fill="#ecf5ff" font-size="10">multi-step problem solving</text>
+          <text x="542" y="102" text-anchor="middle" fill="#f4f4f5" font-size="10">multi-step problem solving</text>
         </g>
 
-        <text x="104" y="62" fill="#9fb2c8" font-size="10">same basic training objective</text>
-        <text x="478" y="62" fill="#34d399" font-size="10">but capability profile changes sharply</text>
+        <text x="104" y="62" fill="#a1a1aa" font-size="10">same basic training objective</text>
+        <text x="455" y="44" fill="#34d399" font-size="10">but capability profile changes sharply</text>
       </svg>
       <div class="diagram-caption">The point is not magic. It is that capability can look smooth in the loss curve while appearing step-like on specific human tasks.</div>
     </div>
@@ -703,35 +688,35 @@
         <span>Order signal</span>
       </div>
       <svg width="720" height="190" viewBox="0 0 720 190" aria-label="Positional encoding diagram">
-        <text x="34" y="28" fill="#9fb2c8" font-size="12">Same words, different meaning</text>
-        <rect x="28" y="42" width="304" height="116" rx="16" fill="#0c1521" stroke="rgba(239,68,68,0.24)"/>
-        <rect x="388" y="42" width="304" height="116" rx="16" fill="#0c1521" stroke="rgba(52,211,153,0.24)"/>
+        <text x="34" y="28" fill="#a1a1aa" font-size="12">Same words, different meaning</text>
+        <rect x="28" y="42" width="304" height="116" rx="16" fill="#121214" stroke="rgba(239,68,68,0.24)"/>
+        <rect x="388" y="42" width="304" height="116" rx="16" fill="#121214" stroke="rgba(52,211,153,0.24)"/>
 
         <text x="48" y="62" fill="#fda4af" font-size="12" font-weight="700">Without positional encoding</text>
         <text x="408" y="62" fill="#34d399" font-size="12" font-weight="700">With positional encoding added</text>
 
-        <text x="48" y="88" fill="#ecf5ff" font-size="11">dog</text>
-        <text x="104" y="88" fill="#ecf5ff" font-size="11">bites</text>
-        <text x="170" y="88" fill="#ecf5ff" font-size="11">man</text>
-        <text x="48" y="118" fill="#ecf5ff" font-size="11">man</text>
-        <text x="104" y="118" fill="#ecf5ff" font-size="11">bites</text>
-        <text x="170" y="118" fill="#ecf5ff" font-size="11">dog</text>
-        <text x="48" y="146" fill="#9fb2c8" font-size="10">same token multiset: {dog, bites, man}</text>
+        <text x="48" y="88" fill="#f4f4f5" font-size="11">dog</text>
+        <text x="104" y="88" fill="#f4f4f5" font-size="11">bites</text>
+        <text x="170" y="88" fill="#f4f4f5" font-size="11">man</text>
+        <text x="48" y="118" fill="#f4f4f5" font-size="11">man</text>
+        <text x="104" y="118" fill="#f4f4f5" font-size="11">bites</text>
+        <text x="170" y="118" fill="#f4f4f5" font-size="11">dog</text>
+        <text x="48" y="146" fill="#a1a1aa" font-size="10">same token multiset: {dog, bites, man}</text>
 
         <g>
           <rect x="408" y="74" width="62" height="24" rx="12" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.24)"/>
           <rect x="480" y="74" width="72" height="24" rx="12" fill="rgba(125,211,252,0.12)" stroke="rgba(125,211,252,0.24)"/>
           <rect x="562" y="74" width="62" height="24" rx="12" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.24)"/>
-          <text x="439" y="90" text-anchor="middle" fill="#ecf5ff" font-size="10">dog + p1</text>
-          <text x="516" y="90" text-anchor="middle" fill="#ecf5ff" font-size="10">bites + p2</text>
-          <text x="593" y="90" text-anchor="middle" fill="#ecf5ff" font-size="10">man + p3</text>
+          <text x="439" y="90" text-anchor="middle" fill="#f4f4f5" font-size="10">dog + p1</text>
+          <text x="516" y="90" text-anchor="middle" fill="#f4f4f5" font-size="10">bites + p2</text>
+          <text x="593" y="90" text-anchor="middle" fill="#f4f4f5" font-size="10">man + p3</text>
 
           <rect x="408" y="114" width="62" height="24" rx="12" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.24)"/>
           <rect x="480" y="114" width="72" height="24" rx="12" fill="rgba(125,211,252,0.12)" stroke="rgba(125,211,252,0.24)"/>
           <rect x="562" y="114" width="62" height="24" rx="12" fill="rgba(52,211,153,0.12)" stroke="rgba(52,211,153,0.24)"/>
-          <text x="439" y="130" text-anchor="middle" fill="#ecf5ff" font-size="10">man + p1</text>
-          <text x="516" y="130" text-anchor="middle" fill="#ecf5ff" font-size="10">bites + p2</text>
-          <text x="593" y="130" text-anchor="middle" fill="#ecf5ff" font-size="10">dog + p3</text>
+          <text x="439" y="130" text-anchor="middle" fill="#f4f4f5" font-size="10">man + p1</text>
+          <text x="516" y="130" text-anchor="middle" fill="#f4f4f5" font-size="10">bites + p2</text>
+          <text x="593" y="130" text-anchor="middle" fill="#f4f4f5" font-size="10">dog + p3</text>
         </g>
       </svg>
       <div class="diagram-caption">Attention alone sees a bag of vectors. Positional encoding makes position part of each vector so the network can distinguish subject from object.</div>
@@ -755,21 +740,22 @@
         <span>Analogy</span>
       </div>
       <svg width="720" height="180" viewBox="0 0 720 180" aria-label="Rutherford and transformer analogy">
-        <rect x="28" y="32" width="300" height="108" rx="16" fill="#0c1521" stroke="rgba(125,211,252,0.14)"/>
-        <rect x="392" y="32" width="300" height="108" rx="16" fill="#0c1521" stroke="rgba(125,211,252,0.14)"/>
-        <text x="48" y="56" fill="#7dd3fc" font-size="12" font-weight="700">Nuclear analogy</text>
-        <text x="48" y="80" fill="#ecf5ff" font-size="11">1933: Rutherford dismisses atomic energy</text>
-        <text x="48" y="102" fill="#34d399" font-size="11">1934: Szilard patents chain reaction idea</text>
-        <text x="48" y="124" fill="#9fb2c8" font-size="10">The decisive mechanism was already forming.</text>
+        <rect x="12" y="32" width="284" height="108" rx="16" fill="#18181b" stroke="#3f3f46"/>
+        <rect x="424" y="32" width="284" height="108" rx="16" fill="#18181b" stroke="#3f3f46"/>
+        <text x="30" y="56" fill="#a1a1aa" font-size="12" font-weight="700">Nuclear analogy</text>
+        <text x="30" y="80" fill="#f4f4f5" font-size="11">1933: Rutherford dismisses atomic energy</text>
+        <text x="30" y="102" fill="#10b981" font-size="11">1934: Szilard patents chain reaction idea</text>
+        <text x="30" y="124" fill="#a1a1aa" font-size="10">The decisive mechanism was already forming.</text>
 
-        <text x="412" y="56" fill="#7dd3fc" font-size="12" font-weight="700">Transformer parallel</text>
-        <text x="412" y="80" fill="#ecf5ff" font-size="11">2017: “Attention Is All You Need”</text>
-        <text x="412" y="102" fill="#34d399" font-size="11">2019: Russell says deep learning falls short</text>
-        <text x="412" y="124" fill="#9fb2c8" font-size="10">2022: ChatGPT reveals how far scaling can go.</text>
+        <text x="442" y="56" fill="#a1a1aa" font-size="12" font-weight="700">Transformer parallel</text>
+        <text x="442" y="80" fill="#f4f4f5" font-size="11">2017: "Attention Is All You Need"</text>
+        <text x="442" y="102" fill="#10b981" font-size="11">2019: Russell says DL falls short</text>
+        <text x="442" y="124" fill="#a1a1aa" font-size="10">2022: ChatGPT reveals scaling's reach.</text>
 
-        <line x1="328" y1="86" x2="392" y2="86" stroke="#f59e0b" stroke-width="3" marker-end="url(#analogyArrow)"/>
+        <line x1="296" y1="86" x2="424" y2="86" stroke="#f59e0b" stroke-width="3" marker-end="url(#analogyArrow)"/>
         <text x="360" y="74" text-anchor="middle" fill="#f59e0b" font-size="10">skeptic speaks</text>
-        <text x="360" y="100" text-anchor="middle" fill="#9fb2c8" font-size="10">while key idea is already live</text>
+        <text x="360" y="98" text-anchor="middle" fill="#a1a1aa" font-size="9">while key idea</text>
+        <text x="360" y="110" text-anchor="middle" fill="#a1a1aa" font-size="9">is already live</text>
         <defs>
           <marker id="analogyArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
             <path d="M0,0 L8,3 L0,6" fill="#f59e0b"/>
