@@ -6,91 +6,81 @@
 <title>Chapter 1: If We Succeed — Quiz</title>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #242838;
-    --accent: #6c63ff;
-    --accent-glow: rgba(108, 99, 255, 0.25);
-    --correct: #22c55e;
-    --incorrect: #ef4444;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #2d3348;
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background:
-      radial-gradient(circle at top left, rgba(108,99,255,0.1), transparent 28%),
-      linear-gradient(180deg, #0d1020 0%, #0f1117 55%, #13162a 100%);
-    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
   .header {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+    background: var(--bg);
     padding: 2.5rem 1.5rem;
     text-align: center;
-    border-bottom: 2px solid var(--accent);
+    border-bottom: 1px solid var(--border);
     position: relative;
-    overflow: hidden;
   }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 50%, rgba(108,99,255,0.1) 0%, transparent 50%);
-    animation: pulse 8s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 1; }
-  }
-  .header h1 { font-size: 1.8rem; position: relative; }
-  .header .chapter-num { color: var(--accent); font-weight: 300; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
-  .header .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; position: relative; }
-  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
-  .nav-link:hover { color: var(--accent); }
+  .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
   .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
   .progress-bar {
     background: var(--surface);
     border-radius: 999px;
-    height: 8px;
+    height: 4px;
     margin: 1.5rem 0;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: none;
   }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    background: var(--text-main);
     border-radius: 999px;
     transition: width 0.5s ease;
     width: 0%;
   }
-  .progress-text { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
   .question-card {
-    background: linear-gradient(180deg, rgba(26,29,39,0.96), rgba(20,23,34,0.96));
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    transition: border-color 0.3s, transform 0.2s ease;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.2);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s;
+    box-shadow: none;
   }
-  .question-card:hover { transform: translateY(-1px); }
-  .question-card.answered-correct { border-color: var(--correct); }
-  .question-card.answered-incorrect { border-color: var(--incorrect); }
-  .question-num { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { color: var(--text-main); font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
   .options { list-style: none; }
   .options li {
-    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(30,34,48,0.96));
+    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
     transition: all 0.2s;
@@ -98,62 +88,64 @@
     align-items: flex-start;
     gap: 0.75rem;
   }
-  .options li:hover:not(.disabled) { border-color: var(--accent); background: rgba(108,99,255,0.08); }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
   .options li.disabled { cursor: default; }
-  .options li.selected-correct { background: rgba(34,197,94,0.12); border-color: var(--correct); }
-  .options li.selected-incorrect { background: rgba(239,68,68,0.12); border-color: var(--incorrect); }
-  .options li.reveal-correct { background: rgba(34,197,94,0.08); border-color: var(--correct); }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { border-color: var(--correct-border); background: transparent; }
   .option-letter {
     flex-shrink: 0;
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--border);
+    width: 24px; height: 24px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; font-weight: 600;
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--text-muted);
     transition: all 0.2s;
   }
-  .selected-correct .option-letter { background: var(--correct); color: #fff; }
-  .selected-incorrect .option-letter { background: var(--incorrect); color: #fff; }
-  .reveal-correct .option-letter { background: var(--correct); color: #fff; }
+  .selected-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .selected-incorrect .option-letter { background: var(--incorrect-border); color: var(--incorrect-text); }
+  .reveal-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
   .explanation {
     margin-top: 0.75rem;
     padding: 0.75rem 1rem;
-    background: rgba(108,99,255,0.06);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     font-size: 0.9rem;
-    color: var(--muted);
+    color: var(--text-muted);
     display: none;
   }
   .explanation.visible { display: block; }
   /* Visual elements */
   .visual-box {
-    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96));
+    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     padding: 1rem;
     margin: 0.75rem 0;
     font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     line-height: 1.5;
     white-space: pre-wrap;
-    color: var(--muted);
+    color: var(--text-muted);
   }
-  .visual-box .highlight { color: var(--accent); font-weight: bold; }
-  .visual-box .label { color: var(--correct); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--correct-text); }
   .timeline {
     display: flex;
     flex-direction: column;
     gap: 0;
     margin: 0.75rem 0;
     padding-left: 1.5rem;
-    border-left: 2px solid var(--accent);
+    border-left: 2px solid var(--border-hover);
   }
   .timeline-item {
     padding: 0.4rem 0 0.4rem 1rem;
     position: relative;
     font-size: 0.85rem;
-    color: var(--muted);
+    color: var(--text-muted);
   }
   .timeline-item::before {
     content: '';
@@ -161,45 +153,45 @@
     left: -1.75rem;
     top: 0.7rem;
     width: 10px; height: 10px;
-    background: var(--accent);
+    background: var(--text-faint);
     border-radius: 50%;
-    box-shadow: 0 0 0 5px rgba(108,99,255,0.08);
   }
-  .timeline-item .year { color: var(--accent); font-weight: 600; }
+  .timeline-item .year { color: var(--text-main); font-weight: 600; }
   .diagram {
     text-align: center;
     margin: 0.75rem 0;
     padding: 1rem;
-    background: linear-gradient(180deg, rgba(36,40,56,0.96), rgba(29,33,47,0.96));
-    border-radius: 14px;
+    background: var(--bg);
     border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     overflow-x: auto;
   }
   .diagram svg { max-width: 100%; }
   .score-card {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border: 1px solid rgba(167,139,250,0.35);
-    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
     padding: 2rem;
     text-align: center;
     margin: 2rem 0;
     display: none;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+    box-shadow: none;
   }
   .score-card.visible { display: block; }
   .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .score-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
-  .score-label { color: var(--muted); }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
   .score-message { margin-top: 1rem; font-size: 1rem; }
   .btn {
     display: inline-block;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
-    color: #fff;
-    padding: 0.6rem 1.5rem;
+    background: var(--text-main);
+    color: var(--bg);
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.95rem;
+    font-weight: 500;
     margin-top: 1rem;
     text-decoration: none;
     transition: opacity 0.2s;
@@ -299,16 +291,16 @@
     <div class="question-text">Russell describes how content-selection algorithms on social media illustrate the problem with the standard model. What do these algorithms optimize for, and what is the unintended consequence?</div>
     <div class="diagram">
       <svg width="420" height="110" viewBox="0 0 420 110">
-        <rect x="10" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#6c63ff"/>
-        <text x="65" y="60" text-anchor="middle" fill="#e2e8f0" font-size="12">Maximize</text>
+        <rect x="10" y="30" width="110" height="50" rx="8" fill="#18181b" stroke="#6c63ff"/>
+        <text x="65" y="60" text-anchor="middle" fill="#f4f4f5" font-size="12">Maximize</text>
         <text x="65" y="75" text-anchor="middle" fill="#6c63ff" font-size="12">click-through</text>
         <line x1="120" y1="55" x2="155" y2="55" stroke="#6c63ff" stroke-width="2" marker-end="url(#arrow)"/>
-        <rect x="155" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#a78bfa"/>
-        <text x="210" y="60" text-anchor="middle" fill="#e2e8f0" font-size="12">Make users more</text>
+        <rect x="155" y="30" width="110" height="50" rx="8" fill="#18181b" stroke="#a78bfa"/>
+        <text x="210" y="60" text-anchor="middle" fill="#f4f4f5" font-size="12">Make users more</text>
         <text x="210" y="75" text-anchor="middle" fill="#a78bfa" font-size="12">predictable</text>
         <line x1="265" y1="55" x2="300" y2="55" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow2)"/>
-        <rect x="300" y="30" width="110" height="50" rx="8" fill="#242838" stroke="#ef4444"/>
-        <text x="355" y="55" text-anchor="middle" fill="#e2e8f0" font-size="12">Push toward</text>
+        <rect x="300" y="30" width="110" height="50" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="355" y="55" text-anchor="middle" fill="#f4f4f5" font-size="12">Push toward</text>
         <text x="355" y="70" text-anchor="middle" fill="#ef4444" font-size="12">extreme views</text>
         <defs>
           <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#6c63ff"/></marker>
