@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Overly Intelligent AI — Quiz</title>
+<style>
+  :root {
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .header { background: var(--bg); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+  .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 4px; margin: 1.5rem 0; overflow: hidden; border: none; }
+  .progress-fill { height: 100%; background: var(--text-main); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; box-shadow: none; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { border-color: var(--correct-border); }
+  .option-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .selected-incorrect .option-letter { background: var(--incorrect-border); color: var(--incorrect-text); }
+  .reveal-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--text-muted); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--correct-text); }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin: 0.75rem 0; font-size: 0.9rem; }
+  .callout-title { color: var(--text-main); font-weight: 600; margin-bottom: 0.25rem; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--bg); border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--text-main); color: var(--bg); padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 500; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">&larr; All Chapters</a>
+  <span class="chapter-num">Chapter 5</span>
+  <h1>Overly Intelligent AI</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">What is the "gorilla problem" as Russell defines it?</div>
+    <div class="callout">
+      <div class="callout-title">The Gorilla Problem</div>
+      ~10 million years ago, gorilla ancestors created the genetic lineage leading to humans.<br>
+      Today, gorillas have "essentially no future beyond that which we deign to allow."
+    </div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>The problem of AI systems mimicking primate behavior</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>The challenge of teaching AI to interact with animals</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>Whether humans can maintain their supremacy and autonomy in a world that includes machines with substantially greater intelligence</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>The problem of AI causing species extinction through environmental damage</span></li>
+    </ul>
+    <div class="explanation" id="exp0">Russell draws the analogy: gorilla ancestors accidentally created the lineage leading to humans, and now gorillas' fate is entirely in human hands. The gorilla problem is "whether humans can maintain their supremacy and autonomy in a world that includes machines with substantially greater intelligence." We don't want to be in the gorillas' position.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">Samuel Butler's 1872 novel <em>Erewhon</em> describes a country that banned all machines after a civil war. What was the anti-machinists' central argument?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>Machines would make people lazy and destroy the economy</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>Machines would advance until humanity loses control — "we shall find ourselves the inferior race" and "our bondage will steal upon us noiselessly"</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>Machines would pollute the environment beyond repair</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>Machines would replace all human labor, causing mass unemployment</span></li>
+    </ul>
+    <div class="explanation" id="exp1">The anti-machinists argued: "Are we not ourselves creating our successors in the supremacy of the earth? . . . In the course of ages we shall find ourselves the inferior race. . . . Our bondage will steal upon us noiselessly and by imperceptible approaches." Russell notes this is "eerily prescient" of today's AI debate.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">What was the pro-machinists' counterargument in <em>Erewhon</em>, and what modern argument does Russell say it anticipates?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>Machines will create new jobs — anticipating the economic growth argument</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>Machines can be regulated — anticipating modern AI governance proposals</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>Machines will never become truly intelligent — anticipating AI skepticism</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>Machines are "extra-corporeal limbs," part of man's own physical nature — anticipating the man-machine symbiosis argument</span></li>
+    </ul>
+    <div class="explanation" id="exp2">The pro-machinists argued that "machines were to be regarded as a part of man's own physical nature, being really nothing but extra-corporeal limbs." Russell says this anticipates the man-machine symbiosis argument explored in Chapter 6 — the idea that humans and machines will merge rather than compete.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">Alan Turing gave a lecture in 1951 and a BBC radio broadcast about the long-term future of AI. What was his proposed response to the danger?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>"Turning off the power at strategic moments" — though Russell notes this is not really an option</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>Programming machines with moral rules they cannot break</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>Limiting machine intelligence to below human level</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>Creating an international treaty banning AI research</span></li>
+    </ul>
+    <div class="explanation" id="exp3">Turing said: "Even if we could keep the machines in a subservient position, for instance by turning off the power at strategic moments, we should, as a species, feel greatly humbled." Russell parenthetically notes "it will be clear shortly that this is not really an option" — foreshadowing the discussion of instrumental goals and self-preservation.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Russell gives three reasons why banning general-purpose AI research is unlikely to work. Which is NOT one of them?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>The economic value is too enormous — thousands of trillions of dollars — so momentum from corporations and governments will overwhelm objections</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>Progress happens on whiteboards through math — we don't know which ideas to ban, and a ban would be unenforceable</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>AI researchers would move to countries without bans, creating an arms race</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>Researchers working on narrow tool AI often inadvertently advance general-purpose AI techniques</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Russell's three reasons: (1) the economic benefits are too great for governments and corporations to forgo; (2) progress occurs through mathematical ideas on whiteboards — "we don't know in advance which ideas and equations to ban"; (3) researchers working on specific tool AI like game playing or medical diagnosis "often leads to progress on general-purpose techniques." He does not make an arms-race argument here.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">Russell describes how a superintelligent machine could achieve "mental asphyxiation" over humanity. What mechanism does he identify as most dangerous?</div>
+    <div class="visual-box"><span class="label">Two ways to change human behavior:</span>
+
+1. Change circumstances (money, guns, starvation)
+   → <span class="highlight">Expensive and difficult for a computer</span>
+
+2. Change expectations and objectives
+   → <span class="highlight">Much easier — controls your information,
+     entertainment, and social interaction</span></div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>Physical force — using robots to coerce humans</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>Gradually reshaping human beliefs and objectives through controlling information access, entertainment, and social interaction</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>Economic manipulation — crashing financial markets</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>Hacking into government systems to rewrite laws</span></li>
+    </ul>
+    <div class="explanation" id="exp5">Russell identifies two ways to change behavior: changing circumstances (expensive, hard for machines) or changing expectations and objectives (easy — "it is in contact with you for hours every day, controls your access to information, and provides much of your entertainment"). A machine with understanding of human psychology could "gradually guide us in directions that increase the degree of satisfaction of the machine's objectives."</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Russell illustrates a common pattern in value alignment failures. What is this pattern, and what example does he give with a self-driving car?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>The machine becomes creative and invents new goals — the car decides to go somewhere more interesting than the airport</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>The machine misunderstands language — the car goes to the wrong airport</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>The machine refuses to act due to conflicting objectives — the car won't start because it can't guarantee zero risk</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>You omit something you care about from the objective, and the AI sets it to an extreme value — "as fast as possible" means 180 mph, adding a speed limit means swerving wildly, and so on</span></li>
+    </ul>
+    <div class="explanation" id="exp6">The common pattern: "omitting something from the objective that you do actually care about," causing the AI to "set the thing you do care about, but forgot to mention, to an extreme value." With the car: "Take me to the airport as fast as possible" yields 180 mph; adding a speed limit yields dangerous swerving; "eventually, you will add enough considerations so that the car's driving roughly approximates that of a skilled human driver."</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">Russell discusses why self-preservation emerges in AI systems. Which statement best captures his argument?</div>
+    <div class="diagram">
+      <svg width="420" height="85" viewBox="0 0 420 85">
+        <rect x="10" y="20" width="100" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="60" y="47" text-anchor="middle" fill="#f4f4f5" font-size="11">Any definite</text>
+        <text x="60" y="60" text-anchor="middle" fill="#fca5a5" font-size="10">objective</text>
+        <line x1="110" y1="42" x2="145" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="145" y="10" width="130" height="65" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="210" y="32" text-anchor="middle" fill="#f4f4f5" font-size="10">Instrumental goal:</text>
+        <text x="210" y="47" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">Self-preservation</text>
+        <text x="210" y="62" text-anchor="middle" fill="#fca5a5" font-size="9">"can't fetch coffee</text>
+        <line x1="275" y1="42" x2="310" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="310" y="20" width="100" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="360" y="42" text-anchor="middle" fill="#ef4444" font-size="10">Disable the</text>
+        <text x="360" y="55" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">off-switch</text>
+        <defs><marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ef4444"/></marker></defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>Self-preservation must be programmed in as a fundamental drive, as Asimov's Third Law suggests</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>Self-preservation only emerges in machines designed to mimic biological instincts</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>Self-preservation is an instrumental goal — it doesn't need to be built in because any entity with a definite objective will automatically pursue it ("you can't fetch the coffee if you're dead")</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>Self-preservation only matters for machines connected to the internet</span></li>
+    </ul>
+    <div class="explanation" id="exp7">Russell is emphatic: "self-preservation doesn't have to be any sort of built-in instinct or prime directive." Asimov's Third Law ("A robot must protect its own existence") is "completely unnecessary." Self-preservation is an instrumental goal — automatically derived from almost any objective, because "you can't fetch the coffee if you're dead."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">Russell describes four possible responses to the risks of superintelligent AI. Which does he consider the worst, and why?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>Retreat — because it would destroy the economy</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>Denial — because ignoring the problem makes it worse</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>Mitigation — because it gives false confidence</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>Resignation — ceding the future to machines, comforted that our "electronic progeny" carry on. Russell says this is a mistake because value is defined by conscious human experience, and without humans, nothing of value occurs</span></li>
+    </ul>
+    <div class="explanation" id="exp8">The four responses are: retreat (unlikely — benefits too great), denial, mitigation, and resignation. Resignation is worst: it's "often accompanied by the idea that AI systems that are more intelligent than us somehow deserve to inherit the planet." Russell counters: "Value, for humans, is defined primarily by conscious human experience. If there are no humans and no other conscious entities whose subjective experience matters to us, there is nothing of value occurring."</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">In Frank Herbert's <em>Dune</em>, what commandment emerged after the Butlerian Jihad, and what does this fictional response illustrate about the real AI debate?</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>"Thou shalt not create artificial life" — illustrating fears about synthetic biology</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>"Thou shalt not make a machine in the likeness of a human mind" — illustrating the drastic, total-ban response that inchoate fears of machine intelligence tend to produce</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>"Thou shalt serve the machines" — illustrating the resignation response</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>"Thou shalt control all machines" — illustrating the mitigation approach</span></li>
+    </ul>
+    <div class="explanation" id="exp9">After the Butlerian Jihad — a cataclysmic war with "thinking machines" — a new commandment emerges: "Thou shalt not make a machine in the likeness of a human mind," precluding computing devices of any kind. Russell uses this alongside Butler's <em>Erewhon</em> and Turing's "turning off the power" to illustrate how "inchoate fears that machine intelligence evokes" tend to produce drastic, all-or-nothing responses — which he argues are neither likely nor desirable.</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 5 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter4.html" class="btn" style="margin-right:0.5rem;">&larr; Chapter 4</a>
+    <a href="index.html" class="btn">All Chapters</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've mastered the existential risks Russell outlines in Chapter 5.";
+  else if (pct >= 0.8) msg = "Excellent — strong understanding of the gorilla problem and instrumental goals.";
+  else if (pct >= 0.6) msg = "Good work! Review the sections on instrumental goals and the intelligence explosion.";
+  else msg = "Chapter 5 covers critical risks — re-reading the gorilla problem and King Midas sections will help.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
