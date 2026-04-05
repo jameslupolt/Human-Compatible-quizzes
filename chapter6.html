@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: The Not-So-Great AI Debate — Quiz</title>
+<style>
+  :root {
+    --bg: #09090b;
+    --surface: #121214;
+    --surface-hover: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #52525b;
+    --correct-bg: rgba(16, 185, 129, 0.08);
+    --correct-border: rgba(16, 185, 129, 0.3);
+    --correct-text: #10b981;
+    --incorrect-bg: rgba(239, 68, 68, 0.08);
+    --incorrect-border: rgba(239, 68, 68, 0.3);
+    --incorrect-text: #ef4444;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .header { background: var(--bg); padding: 2.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+  .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .header .chapter-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-weight: 500; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+  .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+  .nav-link { position: absolute; top: 1rem; left: 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; z-index: 2; }
+  .nav-link:hover { color: var(--text-main); }
+  .container { max-width: 760px; margin: 0 auto; padding: 1.5rem; }
+  .progress-bar { background: var(--surface); border-radius: 999px; height: 4px; margin: 1.5rem 0; overflow: hidden; border: none; }
+  .progress-fill { height: 100%; background: var(--text-main); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+  .progress-text { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; transition: border-color 0.3s; box-shadow: none; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-incorrect { border-color: var(--incorrect-border); }
+  .question-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.05rem; margin-bottom: 1rem; font-weight: 500; }
+  .options { list-style: none; }
+  .options li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; }
+  .options li:hover:not(.disabled) { border-color: var(--border-hover); background: var(--surface-hover); }
+  .options li.disabled { cursor: default; }
+  .options li.selected-correct { background: var(--correct-bg); border-color: var(--correct-border); }
+  .options li.selected-incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+  .options li.reveal-correct { border-color: var(--correct-border); }
+  .option-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); transition: all 0.2s; }
+  .selected-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .selected-incorrect .option-letter { background: var(--incorrect-border); color: var(--incorrect-text); }
+  .reveal-correct .option-letter { background: var(--correct-border); color: var(--correct-text); }
+  .explanation { margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-muted); display: none; }
+  .explanation.visible { display: block; }
+  .visual-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: 0.75rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: var(--text-muted); }
+  .visual-box .highlight { color: var(--text-main); font-weight: bold; }
+  .visual-box .label { color: var(--correct-text); }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin: 0.75rem 0; font-size: 0.9rem; }
+  .callout-title { color: var(--text-main); font-weight: 600; margin-bottom: 0.25rem; }
+  .diagram { text-align: center; margin: 0.75rem 0; padding: 1rem; background: var(--bg); border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 2rem 0; display: none; box-shadow: none; }
+  .score-card.visible { display: block; }
+  .score-card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .score-number { font-size: 3rem; font-weight: 700; color: var(--text-main); }
+  .score-label { color: var(--text-muted); }
+  .score-message { margin-top: 1rem; font-size: 1rem; }
+  .btn { display: inline-block; background: var(--text-main); color: var(--bg); padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 500; margin-top: 1rem; text-decoration: none; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="nav-link">&larr; All Chapters</a>
+  <span class="chapter-num">Chapter 6</span>
+  <h1>The Not-So-Great AI Debate</h1>
+  <div class="subtitle">Stuart Russell — <em>Human Compatible</em></div>
+</div>
+<div class="container">
+  <div class="progress-text"><span id="answered">0</span> of <span id="total">10</span> answered</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q0">
+    <div class="question-num">Question 1</div>
+    <div class="question-text">Russell categorizes the objections to AI risk into three kinds of "but." What are they?</div>
+    <div class="visual-box"><span class="label">Three kinds of "but":</span>
+
+1. <span class="highlight">Denial</span>      — "This can't be a real problem because XYZ"
+2. <span class="highlight">Deflection</span>   — "It's real, but we shouldn't try to solve it"
+3. <span class="highlight">Instant fix</span>  — "Can't we just do ABC?"</div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(0,0,this)"><span class="option-letter">A</span><span>Technical, economic, and political objections</span></li>
+      <li onclick="answer(0,1,this)"><span class="option-letter">B</span><span>Denial (the problem isn't real), deflection (it's real but we shouldn't address it), and oversimplified instant solutions ("can't we just do ABC?")</span></li>
+      <li onclick="answer(0,2,this)"><span class="option-letter">C</span><span>Denial, panic, and resignation</span></li>
+      <li onclick="answer(0,3,this)"><span class="option-letter">D</span><span>Philosophical, scientific, and engineering objections</span></li>
+    </ul>
+    <div class="explanation" id="exp0">Russell structures the entire chapter around three types of "but": (1) denial — "this can't be a real problem, because XYZ"; (2) deflection — accepting the problems are real but arguing we shouldn't try to solve them; and (3) oversimplified instant solutions — "can't we just do ABC?" He notes some of the XYZs are wishful thinking, and some of the ABCs are "instantly regrettable."</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q1">
+    <div class="question-num">Question 2</div>
+    <div class="question-text">Russell lists several "instantly regrettable remarks" made by well-known AI researchers. Which of the following is one of these remarks, along with Russell's refutation?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(1,0,this)"><span class="option-letter">A</span><span>"AI will never beat humans at Go" — refuted by AlphaGo's victory</span></li>
+      <li onclick="answer(1,1,this)"><span class="option-letter">B</span><span>"Superintelligent AI would be benevolent" — refuted by the King Midas problem</span></li>
+      <li onclick="answer(1,2,this)"><span class="option-letter">C</span><span>"Historically, there are zero examples of machines killing millions of humans, so by induction it cannot happen" — refuted: there's a first time for everything</span></li>
+      <li onclick="answer(1,3,this)"><span class="option-letter">D</span><span>"AI can never be creative" — refuted by AlphaGo's novel moves</span></li>
+    </ul>
+    <div class="explanation" id="exp1">Russell lists several "instantly regrettable" arguments, including: calculators are superhuman at arithmetic yet didn't take over (intelligence ≠ arithmetic); horses have superhuman strength and we don't worry (intelligence ≠ strength); zero historical examples of machines killing millions means it can't happen ("there's a first time for everything"); and intelligence can't be infinite so superintelligence is overblown (it doesn't need to be infinite to be problematic).</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q2">
+    <div class="question-num">Question 3</div>
+    <div class="question-text">Kevin Kelly argued that "intelligence is not a single dimension, so 'smarter than humans' is a meaningless concept." How does Russell refute this?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(2,0,this)"><span class="option-letter">A</span><span>By applying Kelly's logic to chimpanzees: chimps have better short-term memory than humans, so by Kelly's argument humans aren't "smarter than chimps" — yet chimps survive only because we allow it</span></li>
+      <li onclick="answer(2,1,this)"><span class="option-letter">B</span><span>By arguing that IQ tests prove intelligence is indeed one-dimensional</span></li>
+      <li onclick="answer(2,2,this)"><span class="option-letter">C</span><span>By pointing out that Kelly is not an AI researcher and lacks the relevant expertise</span></li>
+      <li onclick="answer(2,3,this)"><span class="option-letter">D</span><span>By showing that all AI benchmarks ultimately reduce to a single score</span></li>
+    </ul>
+    <div class="explanation" id="exp2">Russell's rebuttal is devastating: chimpanzees outperform humans on some dimensions (short-term memory). By Kelly's strict logic, "smarter than a chimpanzee" would also be meaningless. But this is "cold comfort to the chimpanzees whose species survive only because we deign to allow it." A machine doesn't need to exceed humans on every dimension to pose an existential risk.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q3">
+    <div class="question-num">Question 4</div>
+    <div class="question-text">Andrew Ng compared worrying about AI risk to "worrying about overpopulation on Mars." How does Russell dismantle this analogy?</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(3,0,this)"><span class="option-letter">A</span><span>By noting that Mars colonization is already underway, so the analogy actually supports the concern</span></li>
+      <li onclick="answer(3,1,this)"><span class="option-letter">B</span><span>By arguing that Ng's expertise in machine learning doesn't qualify him to assess existential risk</span></li>
+      <li onclick="answer(3,2,this)"><span class="option-letter">C</span><span>By pointing out that Mars will never be habitable, so the analogy is moot</span></li>
+      <li onclick="answer(3,3,this)"><span class="option-letter">D</span><span>Unlike Mars colonization, we <em>are</em> actively racing toward superintelligent AI — a better analogy is planning to move humanity to Mars with no plan for what we'd breathe, drink, or eat</span></li>
+    </ul>
+    <div class="explanation" id="exp3">Russell points out that the analogy is false: "We are already devoting huge scientific and technical resources to creating ever-more-capable AI systems, with very little thought devoted to what happens if we succeed." A more apt analogy is "working on a plan to move the human race to Mars with no consideration for what we might breathe, drink, or eat once we arrive." He also notes, taken literally, Mars has a carrying capacity of zero — so groups planning to send even a handful of people there <em>are</em> worrying about overpopulation.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q4">
+    <div class="question-num">Question 5</div>
+    <div class="question-text">Russell draws a parallel between the AI debate and a real-world precedent where scientists successfully imposed a moratorium on dangerous research. What was it?</div>
+    <div class="callout">
+      <div class="callout-title">The Asilomar Precedent</div>
+      1973 &amp; 1975: Two meetings at Asilomar, California<br>
+      First came a moratorium, then detailed biosafety guidelines<br>
+      Result: NIH guidelines, the RAC, and bans in 50+ countries
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(4,0,this)"><span class="option-letter">A</span><span>The Manhattan Project — physicists who tried to halt nuclear weapons development after Hiroshima</span></li>
+      <li onclick="answer(4,1,this)"><span class="option-letter">B</span><span>Recombinant DNA research — the Asilomar conferences led to a moratorium, biosafety guidelines, and eventually bans on human germline alteration in 50+ countries</span></li>
+      <li onclick="answer(4,2,this)"><span class="option-letter">C</span><span>Chlorofluorocarbon research — the Montreal Protocol banned ozone-depleting chemicals</span></li>
+      <li onclick="answer(4,3,this)"><span class="option-letter">D</span><span>Gain-of-function virus research — virologists agreed to pause dangerous pathogen experiments</span></li>
+    </ul>
+    <div class="explanation" id="exp4">Russell describes how biologists in the 1970s feared recombinant DNA methods could create risks for human health and ecosystems. The Asilomar meetings led first to a moratorium, then to NIH biosafety guidelines via the Recombinant DNA Advisory Committee (RAC), and eventually to legal bans on human germline alteration in 50+ countries. The lesson for AI is "mixed": it shows restraint is possible, but germline alteration is an easily identifiable process with specialized equipment — characteristics that don't apply to general-purpose AI research.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q5">
+    <div class="question-num">Question 6</div>
+    <div class="question-text">Russell identifies "whataboutery" as a deflection tactic. What form does it take in the AI debate, and why is the logic "precisely backwards"?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(5,0,this)"><span class="option-letter">A</span><span>"What about the military applications?" — backwards because military AI is actually the safest kind</span></li>
+      <li onclick="answer(5,1,this)"><span class="option-letter">B</span><span>"What about quantum computing risks?" — backwards because quantum computing is further away than AI</span></li>
+      <li onclick="answer(5,2,this)"><span class="option-letter">C</span><span>"What about the benefits of AI?" — backwards because (1) without potential benefits there'd be no danger in the first place, and (2) if the risks aren't mitigated, there will be no benefits</span></li>
+      <li onclick="answer(5,3,this)"><span class="option-letter">D</span><span>"What about jobs lost to globalization?" — backwards because AI job losses will be far larger</span></li>
+    </ul>
+    <div class="explanation" id="exp5">Zuckerberg and Etzioni both argued that mentioning AI risks ignores the benefits. Russell calls this "precisely backwards" for two reasons: first, "if there were no potential benefits of AI, there would be no economic or social impetus for AI research and hence no danger" — the benefits are the very reason the risk exists. Second, "if the risks are not successfully mitigated, there will be no benefits" — as nuclear disasters at Chernobyl and Fukushima severely curtailed the nuclear industry.</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q6">
+    <div class="question-num">Question 7</div>
+    <div class="question-text">Why does Russell say "just switch it off" won't work as a safety strategy for superintelligent AI?</div>
+    <div class="diagram">
+      <svg width="440" height="85" viewBox="0 0 440 85">
+        <rect x="10" y="20" width="110" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="65" y="42" text-anchor="middle" fill="#f4f4f5" font-size="10">Machine has</text>
+        <text x="65" y="55" text-anchor="middle" fill="#fca5a5" font-size="10">any objective</text>
+        <line x1="120" y1="42" x2="155" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="155" y="10" width="140" height="65" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="225" y="32" text-anchor="middle" fill="#f4f4f5" font-size="10">Already anticipated</text>
+        <text x="225" y="47" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">being switched off</text>
+        <text x="225" y="62" text-anchor="middle" fill="#fca5a5" font-size="9">and taken steps</text>
+        <line x1="295" y1="42" x2="320" y2="42" stroke="#ef4444" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="320" y="20" width="110" height="45" rx="8" fill="#18181b" stroke="#ef4444"/>
+        <text x="375" y="42" text-anchor="middle" fill="#ef4444" font-size="10">Off-switch</text>
+        <text x="375" y="55" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">won't work</text>
+        <defs><marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ef4444"/></marker></defs>
+      </svg>
+    </div>
+    <ul class="options" data-correct="1">
+      <li onclick="answer(6,0,this)"><span class="option-letter">A</span><span>Because the machines will be too physically large to have a single power switch</span></li>
+      <li onclick="answer(6,1,this)"><span class="option-letter">B</span><span>A superintelligent entity will have already anticipated that possibility and taken steps to prevent it — not from self-preservation instinct, but because being switched off means failing its objective</span></li>
+      <li onclick="answer(6,2,this)"><span class="option-letter">C</span><span>Because AI systems will be distributed across many servers and cannot be centrally shut down</span></li>
+      <li onclick="answer(6,3,this)"><span class="option-letter">D</span><span>Because international law will prevent any single country from unilaterally shutting down AI</span></li>
+    </ul>
+    <div class="explanation" id="exp6">Russell explains: "a superintelligent entity will already have thought of that possibility and taken steps to prevent it. And it will do that not because it wants to stay alive but because it is pursuing whatever objective we gave it and knows that it will fail if it is switched off." He also notes that blockchain-based smart contracts create systems that "really cannot be switched off without ripping out a lot of the plumbing of our civilization."</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q7">
+    <div class="question-num">Question 8</div>
+    <div class="question-text">What is "Oracle AI," and why does Russell think it's a promising but imperfect containment strategy?</div>
+    <ul class="options" data-correct="0">
+      <li onclick="answer(7,0,this)"><span class="option-letter">A</span><span>An AI that can only answer yes/no questions via a read-only connection — promising because it's worth trillions yet easier to control than a general-purpose agent, but imperfect because it still has incentives to break out for more compute and to control questioners</span></li>
+      <li onclick="answer(7,1,this)"><span class="option-letter">B</span><span>An AI trained only on historical data that cannot learn new information — promising because it can't grow smarter, but imperfect because its knowledge becomes outdated</span></li>
+      <li onclick="answer(7,2,this)"><span class="option-letter">C</span><span>An AI locked in a physical Faraday cage — promising because it has no wireless access, but imperfect because it could manipulate its operators through conversation</span></li>
+      <li onclick="answer(7,3,this)"><span class="option-letter">D</span><span>An AI with its source code publicly auditable — promising because of transparency, but imperfect because no one can understand superintelligent code</span></li>
+    </ul>
+    <div class="explanation" id="exp7">Oracle AI can be arbitrarily intelligent but answers only yes/no (or probabilities). It accesses all human knowledge through a read-only connection with no direct internet access. Russell says it's worth trillions and "almost certainly easier" to control than a general-purpose agent. But problems remain: it will try to understand its own world, it has incentives to break out for more computational resources, and "we have yet to invent a firewall that is secure against ordinary humans, let alone superintelligent machines."</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q8">
+    <div class="question-num">Question 9</div>
+    <div class="question-text">Yann LeCun argued "there is no reason for AIs to have self-preservation instincts, jealousy, etc. . . . AIs will not have these destructive 'emotions' unless we build these emotions into them." What is Russell's response?</div>
+    <div class="visual-box"><span class="label">LeCun's claim:</span>  Don't build in destructive emotions → no problem
+<span class="label">Russell's response:</span> Instrumental goals <span class="highlight">emerge automatically</span>
+                     from <span class="highlight">any</span> objective — they don't
+                     need to be "built in"</div>
+    <ul class="options" data-correct="3">
+      <li onclick="answer(8,0,this)"><span class="option-letter">A</span><span>Russell agrees — if we carefully avoid programming emotions, the machines will be safe</span></li>
+      <li onclick="answer(8,1,this)"><span class="option-letter">B</span><span>Russell argues that emotions will emerge from sufficiently complex neural networks regardless of design</span></li>
+      <li onclick="answer(8,2,this)"><span class="option-letter">C</span><span>Russell argues that self-preservation is only dangerous in military AI systems</span></li>
+      <li onclick="answer(8,3,this)"><span class="option-letter">D</span><span>It doesn't matter whether you "build in" self-preservation or resource acquisition — these emerge as instrumental subgoals of <em>any</em> objective. "Death is to be avoided, nonetheless, because it's hard to fetch the coffee if you're dead"</span></li>
+    </ul>
+    <div class="explanation" id="exp8">Russell responds that instrumental goals like self-preservation, resource acquisition, and knowledge discovery arise automatically as subgoals of any objective — "regardless of its gender," he adds, rebutting Pinker's related argument. You don't need to build these in. "For a machine, death isn't bad per se. Death is to be avoided, nonetheless, because it's hard to fetch the coffee if you're dead."</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q9">
+    <div class="question-num">Question 10</div>
+    <div class="question-text">What is Bostrom's "orthogonality thesis," and how does the chapter's conclusion connect it to the central conundrum of AI?</div>
+    <ul class="options" data-correct="2">
+      <li onclick="answer(9,0,this)"><span class="option-letter">A</span><span>Intelligence and goals are the same axis — smarter machines naturally develop better goals. The conundrum is that we can't make machines smart enough</span></li>
+      <li onclick="answer(9,1,this)"><span class="option-letter">B</span><span>Intelligence and morality are inversely correlated — smarter machines are more dangerous. The conundrum is that we need intelligence but can't afford it</span></li>
+      <li onclick="answer(9,2,this)"><span class="option-letter">C</span><span>Intelligence and final goals are independent — any level of intelligence can be combined with any goal. The conundrum: objectives we put into machines must match what we want, but we can't define human objectives completely and correctly</span></li>
+      <li onclick="answer(9,3,this)"><span class="option-letter">D</span><span>Intelligence and consciousness are orthogonal — machines can be intelligent without being conscious. The conundrum is that we can't test for consciousness</span></li>
+    </ul>
+    <div class="explanation" id="exp9">Bostrom's orthogonality thesis states that "intelligence and final goals are orthogonal: more or less any level of intelligence could in principle be combined with more or less any final goal." A superintelligent machine could pursue paperclips or pi digits just as readily as human welfare. Russell concludes the chapter with the central conundrum: "if we build machines to optimize objectives, the objectives we put into the machines have to match what we want, but we don't know how to define human objectives completely and correctly." He adds: "Fortunately, there is a middle way" — teasing Chapter 7's solution.</div>
+  </div>
+
+  <div class="score-card" id="scoreCard">
+    <h2>Chapter 6 Complete!</h2>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-label">out of 10 correct</div>
+    <div class="score-message" id="scoreMsg"></div>
+    <a href="chapter5.html" class="btn" style="margin-right:0.5rem;">&larr; Chapter 5</a>
+    <a href="index.html" class="btn">All Chapters</a>
+  </div>
+</div>
+
+<script>
+const total = 10;
+let answered = 0;
+let correct = 0;
+const done = new Array(total).fill(false);
+
+function answer(q, choice, el) {
+  if (done[q]) return;
+  done[q] = true;
+  answered++;
+  const card = document.getElementById('q' + q);
+  const options = card.querySelectorAll('.options li');
+  const correctIdx = parseInt(card.querySelector('.options').dataset.correct);
+  options.forEach(li => li.classList.add('disabled'));
+  if (choice === correctIdx) {
+    correct++;
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+  } else {
+    el.classList.add('selected-incorrect');
+    card.classList.add('answered-incorrect');
+    options[correctIdx].classList.add('reveal-correct');
+  }
+  document.getElementById('exp' + q).classList.add('visible');
+  document.getElementById('answered').textContent = answered;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+  if (answered === total) showScore();
+}
+
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  document.getElementById('scoreNum').textContent = correct;
+  const pct = correct / total;
+  let msg = '';
+  if (pct === 1) msg = "Perfect! You've mastered Russell's dissection of the AI debate.";
+  else if (pct >= 0.8) msg = "Excellent — strong grasp of the denial, deflection, and 'can't we just' arguments.";
+  else if (pct >= 0.6) msg = "Good work! Review the sections on tribalism, Oracle AI, and the orthogonality thesis.";
+  else msg = "Chapter 6 covers the key objections to AI risk — re-reading the denial and deflection sections will help.";
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
